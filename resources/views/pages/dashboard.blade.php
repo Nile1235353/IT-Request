@@ -1,7 +1,7 @@
 
 
     <header class="mb-6">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Service Request Log</h1>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">IT Service Request</h1>
       <p class="text-gray-600 mt-1">Track, add, and update service requests from all departments.</p>
     </header>
 

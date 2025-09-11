@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Entry - Service Requests</title>
+  <title>IT -Service Requests </title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,7 @@
       border: 1px solid #d1d5db;
       background-color: #ffffff;
       width: 100%;
+      min-width: 150px;
     }
     .status-Open { background-color: #f3f4f6; color: #374151; }
     .status-InProgress { background-color: #dbeafe; color: #1e40af; }

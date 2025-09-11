@@ -33,11 +33,28 @@
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Request_Description }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Remark }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->created_at }}</td>
-                <td class="px-6 py-4 text-sm">
-                  <select class="status-select status-Completed">
-                    <option selected>Completed</option>
-                  </select>
+                <td>
+                  <form action="{{ route('requests.updateStatus', $service->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <select name="status" class="rounded-md border-gray-300 text-sm px-2 py-1"
+                            onchange="this.form.submit()">
+                      <option value="Open" {{ $service->status == 'Open' ? 'selected' : '' }}>Open</option>
+                      <option value="In Progress" {{ $service->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                      <option value="Completed" {{ $service->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                    </select>
+                  </form>
                 </td>
+
+                <!-- <td class="px-6 py-4 text-sm">
+                  <select class="status-select w-full rounded-md border border-gray-300 text-sm px-2 py-1">
+                    <option value="Pending" {{ $service->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="In Progress" {{ $service->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                    <option value="Completed" {{ $service->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                  </select>
+                </td> -->
+
+
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->	updated_at }}</td>
               </tr>
               <!-- Add more rows manually if needed -->
@@ -49,4 +66,8 @@
             {{ $services->links() }}
         </div>
     </div>
+
+
+    
+
 

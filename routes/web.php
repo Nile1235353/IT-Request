@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Pages\RequestController;
+use App\Http\Controllers\Pages\ItRequestController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -12,7 +12,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard',[RequestController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard',[ItRequestController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +36,11 @@ Route::get('/pages/requestlist', function () {
 
 // Create Request 
 
-Route::post('pages/request/store',[RequestController::class,'store']);
+Route::post('pages/request/store',[ItRequestController::class,'store']);
+
+// Change Status
+
+Route::put('/requests/{id}/status', [ItRequestController::class, 'updateStatus'])
+     ->name('requests.updateStatus');
 
 require __DIR__.'/auth.php';

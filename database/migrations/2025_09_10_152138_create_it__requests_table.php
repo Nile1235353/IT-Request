@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Issue_Category');
             $table->string('Request_Description');
             $table->string('Remark');
+            $table->string('status')->default('Open');
             $table->timestamps();
         });
     }

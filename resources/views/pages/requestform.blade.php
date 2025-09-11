@@ -21,15 +21,21 @@
             <label for="Department" class="block text-sm font-medium text-gray-700">Department</label>
             <select id="Department" name="Department" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
               <option value="">Select Department</option>
-              <option>Sales</option>
-              <option>Marketing</option>
-              <option>IT</option>
-              <option>Human Resources</option>
+              <option>Customer Service</option>
+              <option>Data Center</option>
+              <option>IT & Process</option>
+              <option>QEHS</option>
+              <option>HR</option>
               <option>Finance</option>
-              <option>Operations</option>
+              <option>CCA</option>
+              <option>Warehouse</option>
+              <option>ICD</option>
+              <option>M & E</option>
+              <option>M & R</option>
+              <option>Yard & Rail</option>
             </select>
           </div>
-          <div class="lg:col-span-2">
+          <!-- <div class="lg:col-span-2">
             <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>
             <select id="Issue_Category" name="Issue_Category" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
               <option value="">Select Category</option>
@@ -40,7 +46,26 @@
               <option>Software Installation</option>
               <option>Access Request</option>
             </select>
+          </div> -->
+
+          <div class="lg:col-span-2">
+            <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>
+            <select id="Issue_Category" name="Issue_Category" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+              <option value="">Select Category</option>
+              <option>Bug Fix</option>
+              <option>New Feature Request</option>
+              <option>Data Report</option>
+              <option>Hardware Support</option>
+              <option>Software Installation</option>
+              <option>Access Request</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <!-- Hidden text input for "Other" -->
+            <input type="text" id="Other_Category" name="Other_Category" placeholder="Please specify..." 
+                  class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 hidden">
           </div>
+
           
           <div class="md:col-span-2 lg:col-span-3">
             <label for="Request_Description" class="block text-sm font-medium text-gray-700">Request Description</label>
@@ -58,4 +83,22 @@
         </div>
       </form>
     </div>
+
+
+
+    <script>
+      const categorySelect = document.getElementById('Issue_Category');
+      const otherInput = document.getElementById('Other_Category');
+
+      categorySelect.addEventListener('change', function() {
+        if (this.value === 'Other') {
+          otherInput.classList.remove('hidden');
+          otherInput.required = true;
+        } else {
+          otherInput.classList.add('hidden');
+          otherInput.required = false;
+          otherInput.value = '';
+        }
+      });
+    </script>
 
