@@ -19,7 +19,18 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        // return view('auth.register');
+
+        // User not logged in or role not admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            abort(403, 'Access denied'); // or redirect()->route('dashboard');
+        }
+
+        else {
+            return view('auth.register');
+        }
+
+        // return $next($request);
     }
 
     /**
@@ -33,12 +44,20 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:admin,user'],
+            'employee_id' => ['required', 'string', 'max:50'],
+            'department' => ['required', 'string', 'max:100'],
+            'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'employee_id' => $request->employee_id,
+            'department' => $request->department,
+            'phone' => $request->phone,
         ]);
 
         event(new Registered($user));

@@ -5,48 +5,34 @@
       <form id="new-request-form" action="{{ url('pages/request/store') }}" method="POST">
          @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    
           <div>
-            <label for="requester-name" class="block text-sm font-medium text-gray-700">Requester Name</label>
-            <input type="text" id="Requester_Name" name="Requester_Name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="John Doe">
+              <label for="Requester_Name" class="block text-sm font-medium text-gray-700">Requester Name</label>
+              <input type="text" id="Requester_Name" name="Requester_Name" 
+                    value="{{ Auth::user()->name }}" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
           </div>
+
           <div>
-            <label for="employee-id" class="block text-sm font-medium text-gray-700">Employee ID No.</label>
-            <input type="text" id="Employee_ID" name="Employee_ID" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="EMP12345">
+              <label for="Employee_ID" class="block text-sm font-medium text-gray-700">Employee ID No.</label>
+              <input type="text" id="Employee_ID" name="Employee_ID" 
+                    value="{{ Auth::user()->employee_id }}" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
           </div>
+
           <div>
-            <label for="requester-phone" class="block text-sm font-medium text-gray-700">Requester Phone</label>
-            <input type="tel" id="Requester_Phone" name="Requester_Phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="09-xxxxxxxxx">
+              <label for="Requester_Phone" class="block text-sm font-medium text-gray-700">Requester Phone</label>
+              <input type="tel" id="Requester_Phone" name="Requester_Phone" 
+                    value="{{ Auth::user()->phone }}" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
           </div>
+
           <div>
-            <label for="Department" class="block text-sm font-medium text-gray-700">Department</label>
-            <select id="Department" name="Department" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-              <option value="">Select Department</option>
-              <option>Customer Service</option>
-              <option>Data Center</option>
-              <option>IT & Process</option>
-              <option>QEHS</option>
-              <option>HR</option>
-              <option>Finance</option>
-              <option>CCA</option>
-              <option>Warehouse</option>
-              <option>ICD</option>
-              <option>M & E</option>
-              <option>M & R</option>
-              <option>Yard & Rail</option>
-            </select>
+              <label for="Department" class="block text-sm font-medium text-gray-700">Department</label>
+              <input type="text" id="Department" name="Department" 
+                    value="{{ Auth::user()->department }}" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
           </div>
-          <!-- <div class="lg:col-span-2">
-            <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>
-            <select id="Issue_Category" name="Issue_Category" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-              <option value="">Select Category</option>
-              <option>Bug Fix</option>
-              <option>New Feature Request</option>
-              <option>Data Report</option>
-              <option>Hardware Support</option>
-              <option>Software Installation</option>
-              <option>Access Request</option>
-            </select>
-          </div> -->
 
           <div class="lg:col-span-2">
             <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>

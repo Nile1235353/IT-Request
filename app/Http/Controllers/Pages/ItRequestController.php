@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\It_Request;
 
 class ItRequestController extends Controller
@@ -14,7 +15,18 @@ class ItRequestController extends Controller
     {
         $services = It_Request::orderBy('id', 'desc')->paginate(10);
         // dd($movies);
-        return view('dashboard',compact('services'));
+        // return view('dashboard',compact('services'));
+
+        $today = Carbon::today();
+
+        $stats = [
+            'today'       => It_Request::whereDate('created_at', $today)->count(),
+            'open'        => It_Request::where('status', 'open')->count(),
+            'in progress' => It_Request::where('status', 'in progress')->count(),
+            'completed'   => It_Request::where('status', 'completed')->count(),
+        ];
+
+        return view('dashboard', compact('services','stats'));
     }
 
     // Create Request
@@ -72,6 +84,5 @@ class ItRequestController extends Controller
 
         return redirect()->back()->with('success', 'Status updated!');
     }
-
 
 }

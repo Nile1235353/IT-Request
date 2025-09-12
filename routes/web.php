@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pages\ItRequestController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -42,5 +43,19 @@ Route::post('pages/request/store',[ItRequestController::class,'store']);
 
 Route::put('/requests/{id}/status', [ItRequestController::class, 'updateStatus'])
      ->name('requests.updateStatus');
+
+// Dashboard Status Filter
+
+Route::get('/dashboard/stats', [App\Http\Controllers\RequestController::class, 'dashboardStats']);
+
+// Register Route - Only accessible by admin users
+
+Route::get('/register', [RegisteredUserController::class, 'create'])->middleware(['auth', 'verified'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
+
+// Route::middleware(['auth', 'admin'])->group(function() {
+//     Route::get('/register', [RegisterController::class, 'create'])->name('register');
+//     Route::post('/register', [RegisterController::class, 'store']);
+// });
 
 require __DIR__.'/auth.php';

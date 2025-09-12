@@ -37,7 +37,12 @@
                   <form action="{{ route('requests.updateStatus', $service->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <select name="status" class="rounded-md border-gray-300 text-sm px-2 py-1"
+                    <select name="status"
+                            class="rounded-md border-gray-300 text-sm px-2 py-1
+                            @if($service->status == 'Open') bg-blue-100 text-blue-800
+                            @elseif($service->status == 'In Progress') bg-amber-100 text-amber-800
+                            @elseif($service->status == 'Completed') bg-green-100 text-green-800
+                            @endif"
                             onchange="this.form.submit()">
                       <option value="Open" {{ $service->status == 'Open' ? 'selected' : '' }}>Open</option>
                       <option value="In Progress" {{ $service->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
