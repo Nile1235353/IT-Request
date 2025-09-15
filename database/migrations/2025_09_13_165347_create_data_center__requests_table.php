@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('it__requests', function (Blueprint $table) {
+        Schema::create('data_center__requests', function (Blueprint $table) {
             $table->id();
             $table->string('Requester_Name');
             $table->string('Employee_ID');
@@ -23,10 +23,6 @@ return new class extends Migration
             $table->string('Remark');
             $table->string('status')->default('Open');
             $table->timestamps();
-
-            // Fixed info
-            $table->string('is_fixed')->default('No'); // Yes/No
-            $table->text('Fixed_Details')->nullable();
         });
     }
 
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('it__requests');
+        Schema::dropIfExists('data_center__requests');
     }
 };

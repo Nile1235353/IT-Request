@@ -84,6 +84,10 @@
   <!-- Page Container -->
   <div class="w-full max-w-6xl px-4 mx-auto py-8">
     <div class="bg-white p-4 md:p-8 rounded-2xl">
+      <header class="mb-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">RGL IT Service Request</h1>
+        <p class="text-gray-600 mt-1">Track, add, and update service requests from all departments.</p>
+      </header>
       @yield('content')
     </div>
   </div>
@@ -105,6 +109,109 @@
       });
     });
   </script>
+
+    @if(session('error'))
+      <div id="alert-box" 
+          class="fixed top-6 right-6 backdrop-blur-md bg-red-500/80 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 border border-red-300/30 animate-fade-in">
+          
+          <!-- Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" 
+              class="h-6 w-6 flex-shrink-0" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  d="M12 9v2m0 4h.01M12 5c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9z"/>
+          </svg>
+
+          <!-- Message -->
+          <span class="font-medium">{{ session('error') }}</span>
+      </div>
+
+      <script>
+        // Auto hide after 3 sec
+        setTimeout(() => {
+          const box = document.getElementById('alert-box');
+          if (box) box.style.display = 'none';
+        }, 3000);
+      </script>
+
+      <style>
+        @keyframes fade-in {
+          from {opacity:0; transform: translateY(-10px);}
+          to {opacity:1; transform: translateY(0);}
+        }
+        .animate-fade-in { animation: fade-in 0.4s ease-out; }
+      </style>
+    @endif
+
+
+
+    @if(session('error'))
+      <div id="alert-box" 
+          class="fixed top-6 right-6 backdrop-blur-md bg-red-500/90 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 border border-red-300/30 animate-fade-in">
+          
+          <!-- Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" 
+              class="h-6 w-6 flex-shrink-0" 
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M12 9v2m0 4h.01M12 5c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9z"/>
+          </svg>
+
+          <!-- Message -->
+          <span class="font-medium flex-1">{{ session('error') }}</span>
+
+          <!-- Close button -->
+          <button onclick="document.getElementById('alert-box').remove();" 
+                  class="text-white hover:text-gray-200 focus:outline-none">
+            ✖
+          </button>
+      </div>
+
+      <style>
+        @keyframes fade-in {
+          from {opacity:0; transform: translateY(-10px);}
+          to {opacity:1; transform: translateY(0);}
+        }
+        .animate-fade-in { animation: fade-in 0.4s ease-out; }
+      </style>
+    @endif
+
+
+    @if(session('success'))
+      <div id="alert-box" 
+          class="fixed top-6 right-6 backdrop-blur-md bg-green-500/80 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 border border-green-300/30 animate-fade-in">
+          <svg xmlns="http://www.w3.org/2000/svg" 
+              class="h-6 w-6 flex-shrink-0" 
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M5 13l4 4L19 7"/>
+          </svg>
+          <span class="font-medium">{{ session('success') }}</span>
+      </div>
+    @endif
+
+    <script>
+      // Auto hide after 3 sec
+      setTimeout(() => {
+        const box = document.getElementById('alert-box');
+        if (box) box.style.display = 'none';
+      }, 3000);
+    </script>
+
+    <style>
+      @keyframes fade-in {
+        from {opacity:0; transform: translateY(-10px);}
+        to {opacity:1; transform: translateY(0);}
+      }
+      .animate-fade-in { animation: fade-in 0.4s ease-out; }
+    </style>
+
+
+
+
 
 </body>
 </html>

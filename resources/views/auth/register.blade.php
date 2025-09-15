@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- Department & Employee ID -->
+        <!-- Department, Employee ID & Location -->
         <div class="flex flex-col md:flex-row md:space-x-4">
             <div class="flex-1 mb-4">
                 <label class="block mb-2 text-gray-700">Department</label>
@@ -58,6 +58,13 @@
                 <input type="text" name="employee_id" value="{{ old('employee_id') }}" required
                     class="w-full p-2 border rounded">
                 @error('employee_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="flex-1 mb-4">
+                <label class="block mb-2 text-gray-700">Location</label>
+                <input type="text" name="location" value="{{ old('location') }}" required
+                    class="w-full p-2 border rounded">
+                @error('location')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
         </div>
 
@@ -81,6 +88,7 @@
             <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:underline">Already registered?</a>
             <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Register</button>
         </div>
+
     </form>
 </div>
 @endsection

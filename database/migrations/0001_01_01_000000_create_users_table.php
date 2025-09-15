@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('role')->default('user'); // Add role column with default value 'user'
             $table->string('employee_id'); // Add employee_id column
             $table->string('department'); // Add department column
+            $table->string('location')->nullable(); // Add location column
             $table->string('phone')->nullable(); // Add phone column
             $table->rememberToken();
             $table->timestamps();

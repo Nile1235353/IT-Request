@@ -38,15 +38,22 @@ Route::get('/pages/requestlist', function () {
 // Create Request 
 
 Route::post('pages/request/store',[ItRequestController::class,'store']);
+Route::post('pages/request/softwareStore',[ItRequestController::class,'softwareStore']);
+Route::post('pages/request/datacenterStore',[ItRequestController::class,'dataCenterStore']);
 
 // Change Status
 
 Route::put('/requests/{id}/status', [ItRequestController::class, 'updateStatus'])
      ->name('requests.updateStatus');
+Route::put('/requests/{id}/softwareStatus', [ItRequestController::class, 'softwareUpdateStatus'])
+     ->name('requests.softwareStatus');
+Route::put('/requests/{id}/dataCenterStatus', [ItRequestController::class, 'dataCenterUpdateStatus'])
+        ->name('requests.dataCenterStatus');
 
 // Dashboard Status Filter
 
 Route::get('/dashboard/stats', [App\Http\Controllers\RequestController::class, 'dashboardStats']);
+
 
 // Register Route - Only accessible by admin users
 

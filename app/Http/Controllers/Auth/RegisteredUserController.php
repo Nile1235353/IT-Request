@@ -17,20 +17,13 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
-        // return view('auth.register');
-
-        // User not logged in or role not admin
         if (!Auth::check() || Auth::user()->role !== 'admin') {
-            abort(403, 'Access denied'); // or redirect()->route('dashboard');
+            return redirect()->back()->with('error', '❌ Access Denied: Admin only.');
         }
 
-        else {
-            return view('auth.register');
-        }
-
-        // return $next($request);
+        return view('auth.register');
     }
 
     /**
@@ -47,6 +40,7 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'string', 'in:admin,user'],
             'employee_id' => ['required', 'string', 'max:50'],
             'department' => ['required', 'string', 'max:100'],
+            'location' => ['nullable', 'string', 'max:100'],
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
@@ -57,6 +51,7 @@ class RegisteredUserController extends Controller
             'role' => $request->role,
             'employee_id' => $request->employee_id,
             'department' => $request->department,
+            'location' => $request->location,
             'phone' => $request->phone,
         ]);
 

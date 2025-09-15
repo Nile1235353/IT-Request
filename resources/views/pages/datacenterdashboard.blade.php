@@ -4,19 +4,19 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h3 class="text-sm font-medium text-gray-500">Today's Requests</h3>
-        <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $stats['today'] }}</p>
+        <p class="mt-1 text-3xl font-semibold text-gray-900">{{ $datacenter_stats['today'] }}</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h3 class="text-sm font-medium text-gray-500">Open</h3>
-        <p class="mt-1 text-3xl font-semibold text-blue-600">{{ $stats['open'] }}</p>
+        <p class="mt-1 text-3xl font-semibold text-blue-600">{{ $datacenter_stats['open'] }}</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h3 class="text-sm font-medium text-gray-500">In Progress</h3>
-        <p class="mt-1 text-3xl font-semibold text-amber-600">{{ $stats['in progress'] }}</p>
+        <p class="mt-1 text-3xl font-semibold text-amber-600">{{ $datacenter_stats['in progress'] }}</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h3 class="text-sm font-medium text-gray-500">Completed</h3>
-        <p class="mt-1 text-3xl font-semibold text-green-600">{{ $stats['completed'] }}</p>
+        <p class="mt-1 text-3xl font-semibold text-green-600">{{ $datacenter_stats['completed'] }}</p>
       </div>
     </div>
 

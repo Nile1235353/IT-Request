@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class It_Request extends Model
+class DataCenter_Request extends Model
 {
     //
     protected $fillable = [
@@ -17,8 +17,6 @@ class It_Request extends Model
         'Request_Description',
         'Remark',
         'created_at',
-        'updated_at',
-        'is_fixed',
-        'Fixed_Details',
+        'updated_at'
     ];
 }
