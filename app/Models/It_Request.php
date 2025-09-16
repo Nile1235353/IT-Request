@@ -12,13 +12,14 @@ class It_Request extends Model
         'Employee_ID',
         'Requester_Phone',
         'Department',
-        'Priority',
+        'Location',
+        // 'Priority',
         'Issue_Category',
         'Request_Description',
         'Remark',
         'created_at',
         'updated_at',
-        'is_fixed',
-        'Fixed_Details',
+        // 'is_fixed',
+        // 'Fixed_Details',
     ];
 }

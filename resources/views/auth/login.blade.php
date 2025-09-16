@@ -10,7 +10,8 @@
   
   <style>
     body {
-      background-color: #f8f9fa;
+      background: url("{{ asset('storage/background-ss.png') }}") no-repeat repeat;
+      background-size: cover;
     }
     .login-container {
       min-height: 100vh;
@@ -27,12 +28,16 @@
       box-shadow: none;
       border-color: #0d6efd;
     }
+
+    .btn-primary {
+      background-color: #00559c;
+    }
   </style>
 </head>
 <body>
 
 <div class="login-container">
-  <div class="card login-card col-md-4">
+  <div class="card login-card col-11 col-sm-8 col-md-6 col-lg-4">
     <h3 class="text-center mb-4">IT-Request Login</h3>
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -50,7 +55,7 @@
       <div class="text-center">
         <small>
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                <a href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
@@ -59,6 +64,7 @@
     </form>
   </div>
 </div>
+
 
 <!-- Bootstrap JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -10,10 +10,11 @@
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request Description</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fixed Access Code</th>
+              <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fixed Access Code</th> -->
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requester Name</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th> -->
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comment</th>
@@ -29,10 +30,11 @@
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->id }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Request_Description }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Issue_Category }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Fixed_Details }}</td>
+                <!-- <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Fixed_Details }}</td> -->
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Requester_Name }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Department }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Priority }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ $service->location }}</td>
+                <!-- <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Priority }}</td> -->
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Employee_ID }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Requester_Phone }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $service->Remark }}</td>

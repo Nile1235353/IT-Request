@@ -72,10 +72,11 @@ class ItRequestController extends Controller
             'Employee_ID' => 'required|string|max:50',
             'Requester_Phone' => 'nullable|string|max:20',
             'Department' => 'required|string',
-            'Priority' => 'required|in:Low,Medium,High,Critical',
+            'Location' => 'nullable|string|max:255',
+            // 'Priority' => 'required|in:Low,Medium,High,Critical',
             'Issue_Category' => 'required|string',
-            'is_fixed' => 'nullable|string|in:Yes,No',
-            'Fixed_Details' => 'nullable|string|max:1000',
+            // 'is_fixed' => 'nullable|string|in:Yes,No',
+            // 'Fixed_Details' => 'nullable|string|max:1000',
             'Request_Description' => 'required|string|max:500',
             'Remark' => 'nullable|string|max:1000',
             'Other_Category' => 'nullable|string|max:255',
@@ -92,16 +93,17 @@ class ItRequestController extends Controller
             'Employee_ID' => $request->Employee_ID,
             'Requester_Phone' => $request->Requester_Phone,
             'Department' => $request->Department,
-            'Priority' => $request->Priority,
+            'Location' => $request->Location,
+            // 'Priority' => $request->Priority,
             'Issue_Category' => $issueCategory, // <-- overwrite if Other
-            'is_fixed' => $request->is_fixed ?? 'No', // default to 'No' if not provided
-            'Fixed_Details' => $request->Fixed_Details,
+            // 'is_fixed' => $request->is_fixed ?? 'No', // default to 'No' if not provided
+            // 'Fixed_Details' => $request->Fixed_Details,
             'Request_Description' => $request->Request_Description,
             'Remark' => $request->Remark,
         ]);
 
-        // return redirect()->back()->with('success', 'Service request added successfully.');
-         return back()->withInput(); // old() helper သုံးဖို့
+        return redirect()->back()->with('success', 'Service request added successfully.');
+        //  return back()->withInput(); // old() helper သုံးဖို့
     }
 
     // For Softare Request Store
@@ -188,7 +190,8 @@ class ItRequestController extends Controller
             'Employee_ID'         => 'required|string|max:255',
             'Requester_Phone'     => 'required|string|max:255',
             'Department'          => 'required|string|max:255',
-            'Priority'            => 'required|in:Low,Medium,High,Critical',
+            'Location'           => 'nullable|string|max:255',
+            // 'Priority'            => 'required|in:Low,Medium,High,Critical',
             'Issue_Category'      => 'required|string|max:255',
             'Other_Category'      => 'nullable|string|max:255',
             'Request_Description' => 'required|string|max:255',
@@ -207,7 +210,8 @@ class ItRequestController extends Controller
             'Employee_ID'         => $validated['Employee_ID'],
             'Requester_Phone'     => $validated['Requester_Phone'],
             'Department'          => $validated['Department'],
-            'Priority'            => $validated['Priority'],
+            'Location'            => $validated['Location'],
+            // 'Priority'            => $validated['Priority'],
             'Issue_Category'      => $finalCategory,
             'Request_Description' => $validated['Request_Description'],
             'Remark'              => $validated['Remark'],

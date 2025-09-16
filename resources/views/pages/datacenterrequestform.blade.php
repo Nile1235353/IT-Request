@@ -38,7 +38,7 @@
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
     </div>
 
-    <div>
+    <!-- <div>
         <label for="Priority" class="block text-sm font-medium text-gray-700">Priority</label>
         <select id="Priority" name="Priority" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -47,7 +47,7 @@
           <option>High</option>
           <option>Urgent</option>
         </select>
-      </div>
+      </div> -->
 
       <div class="lg:col-span-2">
         <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('Employee_ID');
             $table->string('Requester_Phone');
             $table->string('Department');
-            $table->string('Priority');
+            $table->string('Location')->nullable();
+            // $table->string('Priority');
             $table->string('Issue_Category');
             $table->string('Request_Description');
             $table->string('Remark');

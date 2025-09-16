@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('Employee_ID');
             $table->string('Requester_Phone');
             $table->string('Department');
-            $table->string('Priority');
+            // $table->string('Priority');
+            $table->string('location')->nullable(); // New field for location
             $table->string('Issue_Category');
             $table->string('Request_Description');
             $table->string('Remark');
@@ -25,8 +26,8 @@ return new class extends Migration
             $table->timestamps();
 
             // Fixed info
-            $table->string('is_fixed')->default('No'); // Yes/No
-            $table->text('Fixed_Details')->nullable();
+            // $table->string('is_fixed')->default('No'); // Yes/No
+            // $table->text('Fixed_Details')->nullable();
         });
     }
 

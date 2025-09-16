@@ -1,5 +1,5 @@
 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-200 mb-8">
-  <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">Create a New Service Request</h2>
+  <h2 class="text-xl font-semibold text-gray-800 mb-6 text-left">Create a New Service Request</h2>
 
   <form id="new-request-form" action="{{ url('pages/request/store') }}" method="POST">
     @csrf
@@ -38,7 +38,7 @@
       </div>
 
       <!-- Priority -->
-      <div>
+      <!-- <div>
         <label class="block text-sm font-medium text-gray-700">Priority</label>
         <select name="Priority" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
           <option>Low</option>
@@ -46,7 +46,7 @@
           <option>High</option>
           <option>Urgent</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Issue Category + Fixed Side by Side -->
       <div class="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -95,7 +95,7 @@
         </div>
 
         <!-- Fixed / Not Fixed -->
-        <div>
+        <!-- <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Issue Fixed?</label>
           <div class="flex items-center space-x-4">
             <label class="flex items-center space-x-2">
@@ -110,7 +110,7 @@
 
           <input type="text" id="Fixed_Details" name="Fixed_Details" placeholder="Please describe the fix..." 
                  class="mt-2 block w-full rounded-md border-gray-300 shadow-sm p-2 hidden">
-        </div>
+        </div> -->
       </div>
 
       <!-- Request Description -->
