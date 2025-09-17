@@ -10,7 +10,7 @@
   
   <style>
     body {
-      background: url("{{ asset('storage/background-ss.png') }}") no-repeat repeat;
+      background: url("{{ asset('storage/background-ss.jpg') }}") no-repeat repeat;
       background-size: cover;
     }
     .login-container {

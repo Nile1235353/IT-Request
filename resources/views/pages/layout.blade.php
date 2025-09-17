@@ -27,7 +27,7 @@
       <div class="flex items-center space-x-6">
         {{-- Logo will be hidden on small screens, shown on medium screens and up --}}
         <a href="{{ url('/dashboard') }}" class="flex-shrink-0 hidden md:block">
-          <img class="h-8 w-auto" src="{{ asset('storage/navlogo.png') }}" alt="RGL Logo">
+          <img class="w-40 h-auto"  src="{{ asset('storage/navlogo.png') }}" alt="RGL Logo">
         </a>
         
         <a href="{{ url('/dashboard') }}" class="text-lg font-semibold hover:text-gray-300">
