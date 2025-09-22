@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -89,7 +91,7 @@
       </div>
 
       <div class="text-center md:text-left md:flex-grow">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">RGL IT Service Request</h1>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">IT Service Request</h1>
         <p class="text-gray-600 mt-1">Track, add, and update service requests from all departments.</p>
       </div>
 

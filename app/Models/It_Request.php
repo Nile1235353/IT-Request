@@ -16,10 +16,17 @@ class It_Request extends Model
         // 'Priority',
         'Issue_Category',
         'Request_Description',
+        'IT_Officer',
         'Remark',
         'created_at',
         'updated_at',
         // 'is_fixed',
         // 'Fixed_Details',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'Remark',
     ];
 }

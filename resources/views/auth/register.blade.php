@@ -62,8 +62,11 @@
 
             <div class="flex-1 mb-4">
                 <label class="block mb-2 text-gray-700">Location</label>
-                <input type="text" name="location" value="{{ old('location') }}" required
-                    class="w-full p-2 border rounded">
+                <select name="location" required class="w-full p-2 border rounded">
+                    <option value="">Select Location</option>
+                    <option value="Yangon" {{ old('location') == 'Yangon' ? 'selected' : '' }}>Yangon</option>
+                    <option value="Mandalay" {{ old('location') == 'Mandalay' ? 'selected' : '' }}>Mandalay</option>
+                </select>
                 @error('location')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
         </div>

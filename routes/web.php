@@ -60,6 +60,21 @@ Route::get('/dashboard/stats', [App\Http\Controllers\RequestController::class, '
 Route::get('/register', [RegisteredUserController::class, 'create'])->middleware(['auth', 'verified'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+// Update Request Data Form
+
+Route::put('/requests/{id}/update-description', [ItRequestController::class, 'updateDescription'])->name('requests.updateDescription');
+Route::put('/requests/{id}/update-category', [ItRequestController::class, 'updateCategory'])->name('requests.updateCategory');
+// Route for updating location
+Route::put('/requests/{id}/location', [ItRequestController::class, 'updateLocation'])->name('requests.updateLocation');
+// Route for updating remark/comment
+Route::put('/requests/{id}/remark', [ItRequestController::class, 'updateRemark'])->name('requests.updateRemark');
+// Route for updating Data Center remark/comment
+Route::put('/requests/{id}/DataCenterRemark', [ItRequestController::class, 'DataCenterUpdateRemark'])->name('requests.DataCenterUpdateRemark');
+
+// For Data Center
+Route::put('/requests/{id}/datacenterUpdate-category', [ItRequestController::class, 'DataCenterupdateCategory'])->name('requests.DataCenterUpdateCategory');
+Route::put('/requests/{id}/datacenterUpdate-description', [ItRequestController::class, 'DataCenterUpdateDescription'])->name('requests.DataCenterUpdateDescription');
+
 // Route::middleware(['auth', 'admin'])->group(function() {
 //     Route::get('/register', [RegisterController::class, 'create'])->name('register');
 //     Route::post('/register', [RegisterController::class, 'store']);

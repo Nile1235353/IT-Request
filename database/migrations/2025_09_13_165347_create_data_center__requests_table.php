@@ -21,7 +21,7 @@ return new class extends Migration
             // $table->string('Priority');
             $table->string('Issue_Category');
             $table->string('Request_Description');
-            $table->string('Remark');
+            $table->string('Remark')->default('Null');
             $table->string('status')->default('Open');
             $table->timestamps();
         });

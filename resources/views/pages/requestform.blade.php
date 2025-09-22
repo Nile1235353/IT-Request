@@ -33,8 +33,12 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700">Location</label>
-        <input type="text" name="Location" value="{{ Auth::user()->location }}" readonly
-               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+        <!-- Comment: Select box နဲ့ Yangon/Mandalay သာပဲ ရွေးနိုင်မယ် -->
+        <select name="location" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+            <option value="Yangon" {{ Auth::user()->location === 'Yangon' ? 'selected' : '' }}>Yangon</option>
+            <option value="Mandalay" {{ Auth::user()->location === 'Mandalay' ? 'selected' : '' }}>Mandalay</option>
+        </select>
       </div>
 
       <!-- Priority -->
@@ -122,12 +126,12 @@
       </div>
 
       <!-- Remark / Comment -->
-      <div class="md:col-span-2 lg:col-span-3">
+      <!-- <div class="md:col-span-2 lg:col-span-3">
         <label class="block text-sm font-medium text-gray-700">Comment / Remark</label>
-        <textarea name="Remark" rows="3" required 
+        <textarea name="Remark" rows="3" 
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" 
                   placeholder="Add any additional details here..."></textarea>
-      </div>
+      </div> -->
 
     </div>
 
