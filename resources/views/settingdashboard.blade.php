@@ -9,20 +9,20 @@
     </header> -->
 
   <!-- Request Type Dropdown -->
-  <select id="request-type" name="request_type" class="border rounded-lg p-2 mb-6">
+  <!-- <select id="request-type" name="request_type" class="border rounded-lg p-2 mb-6">
     <option value="user" {{ old('request_type', 'user') == 'user' ? 'selected' : '' }}>Request to Hardware Team</option>
     <option value="management" {{ old('request_type') == 'management' ? 'selected' : '' }}>Request to Data Center Team</option>
-</select>
+</select> -->
 
 
   <!--  -->
-  <div id="user-fields" class="request-section">
+  <!-- <div id="user-fields" class="request-section">
     <p>This is User Page!</p>
   </div>
 
   <div id="management-fields" class="request-section">
     <p>This is Management Page !</p>
-  </div>
+  </div> -->
 
   <!-- Submit Button -->
   <!-- <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">

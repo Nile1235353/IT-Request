@@ -90,14 +90,14 @@ Route::put('/requests/{id}/datacenterUpdate-description', [ItRequestController::
 //     return view('settingdashboard');
 // });
 
-// User List
-Route::get('/users',[UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users');
+// // User List
+// Route::get('/users',[UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users');
 
-// User Edit Form
-Route::get('/users/{id}/edit', [UserController::class, 'edit'])->middleware(['auth', 'verified'])->name('users.edit');
+// // User Edit Form
+// Route::get('/users/{id}/edit', [UserController::class, 'edit'])->middleware(['auth', 'verified'])->name('users.edit');
 
-// User Update Action
-Route::put('/users/{id}', [UserController::class, 'update'])->middleware(['auth', 'verified'])->name('users.update');
+// // User Update Action
+// Route::put('/users/{id}', [UserController::class, 'update'])->middleware(['auth', 'verified'])->name('users.update');
 
 // Route::middleware(['auth', 'admin'])->group(function() {
 //     Route::get('/register', [RegisterController::class, 'create'])->name('register');
