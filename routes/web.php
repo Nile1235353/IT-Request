@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pages\ItRequestController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\UserController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -37,22 +38,22 @@ Route::get('/pages/requestlist', function () {
 
 // Create Request 
 
-Route::post('pages/request/store',[ItRequestController::class,'store']);
-Route::post('pages/request/softwareStore',[ItRequestController::class,'softwareStore']);
-Route::post('pages/request/datacenterStore',[ItRequestController::class,'dataCenterStore']);
+Route::post('pages/request/store',[ItRequestController::class,'store'])->middleware(['auth', 'verified']);
+Route::post('pages/request/softwareStore',[ItRequestController::class,'softwareStore'])->middleware(['auth', 'verified']);
+Route::post('pages/request/datacenterStore',[ItRequestController::class,'dataCenterStore'])->middleware(['auth', 'verified']);
 
 // Change Status
 
-Route::put('/requests/{id}/status', [ItRequestController::class, 'updateStatus'])
+Route::put('/requests/{id}/status', [ItRequestController::class, 'updateStatus'])->middleware(['auth', 'verified'])
      ->name('requests.updateStatus');
-Route::put('/requests/{id}/softwareStatus', [ItRequestController::class, 'softwareUpdateStatus'])
+Route::put('/requests/{id}/softwareStatus', [ItRequestController::class, 'softwareUpdateStatus'])->middleware(['auth', 'verified'])
      ->name('requests.softwareStatus');
-Route::put('/requests/{id}/dataCenterStatus', [ItRequestController::class, 'dataCenterUpdateStatus'])
+Route::put('/requests/{id}/dataCenterStatus', [ItRequestController::class, 'dataCenterUpdateStatus'])->middleware(['auth', 'verified'])
         ->name('requests.dataCenterStatus');
 
 // Dashboard Status Filter
 
-Route::get('/dashboard/stats', [App\Http\Controllers\RequestController::class, 'dashboardStats']);
+Route::get('/dashboard/stats', [App\Http\Controllers\RequestController::class, 'dashboardStats'])->middleware(['auth', 'verified']);
 
 
 // Register Route - Only accessible by admin users
@@ -62,18 +63,41 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 
 // Update Request Data Form
 
-Route::put('/requests/{id}/update-description', [ItRequestController::class, 'updateDescription'])->name('requests.updateDescription');
-Route::put('/requests/{id}/update-category', [ItRequestController::class, 'updateCategory'])->name('requests.updateCategory');
+Route::put('/requests/{id}/update-description', [ItRequestController::class, 'updateDescription'])->middleware(['auth', 'verified'])
+->name('requests.updateDescription');
+
+Route::put('/requests/{id}/update-category', [ItRequestController::class, 'updateCategory'])->middleware(['auth', 'verified'])
+->name('requests.updateCategory');
 // Route for updating location
-Route::put('/requests/{id}/location', [ItRequestController::class, 'updateLocation'])->name('requests.updateLocation');
+Route::put('/requests/{id}/location', [ItRequestController::class, 'updateLocation'])->middleware(['auth', 'verified'])
+->name('requests.updateLocation');
 // Route for updating remark/comment
-Route::put('/requests/{id}/remark', [ItRequestController::class, 'updateRemark'])->name('requests.updateRemark');
+Route::put('/requests/{id}/remark', [ItRequestController::class, 'updateRemark'])->middleware(['auth', 'verified'])
+->name('requests.updateRemark');
 // Route for updating Data Center remark/comment
-Route::put('/requests/{id}/DataCenterRemark', [ItRequestController::class, 'DataCenterUpdateRemark'])->name('requests.DataCenterUpdateRemark');
+Route::put('/requests/{id}/DataCenterRemark', [ItRequestController::class, 'DataCenterUpdateRemark'])->middleware(['auth', 'verified'])
+->name('requests.DataCenterUpdateRemark');
 
 // For Data Center
-Route::put('/requests/{id}/datacenterUpdate-category', [ItRequestController::class, 'DataCenterupdateCategory'])->name('requests.DataCenterUpdateCategory');
-Route::put('/requests/{id}/datacenterUpdate-description', [ItRequestController::class, 'DataCenterUpdateDescription'])->name('requests.DataCenterUpdateDescription');
+Route::put('/requests/{id}/datacenterUpdate-category', [ItRequestController::class, 'DataCenterupdateCategory'])->middleware(['auth', 'verified'])
+->name('requests.DataCenterUpdateCategory');
+Route::put('/requests/{id}/datacenterUpdate-description', [ItRequestController::class, 'DataCenterUpdateDescription'])->middleware(['auth', 'verified'])
+->name('requests.DataCenterUpdateDescription');
+
+//Setting Dashboard 
+
+// Route::get('/settingDashboard', function () {
+//     return view('settingdashboard');
+// });
+
+// User List
+Route::get('/users',[UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users');
+
+// User Edit Form
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->middleware(['auth', 'verified'])->name('users.edit');
+
+// User Update Action
+Route::put('/users/{id}', [UserController::class, 'update'])->middleware(['auth', 'verified'])->name('users.update');
 
 // Route::middleware(['auth', 'admin'])->group(function() {
 //     Route::get('/register', [RegisterController::class, 'create'])->name('register');

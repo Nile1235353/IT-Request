@@ -33,11 +33,12 @@
                             <form action="{{ route('requests.updateDescription', $service->id) }}" method="POST" class="inline-block hidden description-form w-full">
                                 @csrf
                                 @method('PUT')
-                                <input type="text" name="Request_Description" value="{{ $service->Request_Description }}" class="border rounded px-2 py-1 text-sm w-80 h-20"
-                                    onkeydown="if(event.key==='Enter'){this.form.submit(); return false;}">
+                                <textarea name="Request_Description" class="border rounded px-2 py-1 text-sm w-80 h-20"
+                                    onkeydown="if(event.key==='Enter'){this.form.submit(); return false;}">{{ $service->Request_Description }}</textarea>
                             </form>
 
-                            <button type="button" class="btn btn-sm btn-outline-primary edit-btn p-0">
+
+                            <button type="button" class="btn btn-sm btn-outline-primary edit-des-btn p-0">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
                               </svg>
@@ -181,80 +182,87 @@
 <!-- Inline Edit JS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Table Body ကို parent အဖြစ် သတ်မှတ်ပြီး listener တစ်ခုတည်း တပ်ဆင်ပါ
+    const tableBody = document.getElementById('requests-table-body');
 
-    // Request Description Inline Edit
-    document.querySelectorAll('.edit-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const td = btn.closest('td');
-            td.querySelector('.description-text').classList.toggle('hidden');
-            const form = td.querySelector('.description-form');
-            form.classList.toggle('hidden');
-            if (!form.classList.contains('hidden')) form.querySelector('input').focus();
-        });
-    });
+    if (tableBody) {
+        tableBody.addEventListener('click', function(event) {
+            
+            // --- Request Description Edit ---
+            const editBtn = event.target.closest('.edit-des-btn');
+            if (editBtn) {
+                const td = editBtn.closest('td');
+                td.querySelector('.description-text').classList.toggle('hidden');
+                const form = td.querySelector('.description-form');
+                form.classList.toggle('hidden');
+                if (!form.classList.contains('hidden')) form.querySelector('textarea').focus();  // ✅ textarea ကိုပဲ focus
+                return;
+            }
 
-    document.querySelectorAll('.edit-remark-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        const td = btn.closest('td');
-        td.querySelector('.comment-text').classList.toggle('hidden');
-        const form = td.querySelector('.comment-form');
-        form.classList.toggle('hidden');
-        if (!form.classList.contains('hidden')) form.querySelector('input').focus();
-    });
-});
 
-    document.querySelectorAll('.edit-category-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        const container = btn.closest('td');
-        const form = container.querySelector('.category-form');
-        const select = form.querySelector('select[name="Issue_Category"]');
-        const otherInput = form.querySelector('input[name="Other_Category"]');
+            // --- Remark/Comment Edit ---
+            const editRemarkBtn = event.target.closest('.edit-remark-btn');
+            if (editRemarkBtn) {
+                const td = editRemarkBtn.closest('td');
+                td.querySelector('.comment-text').classList.toggle('hidden');
+                const form = td.querySelector('.comment-form');
+                form.classList.toggle('hidden');
+                if (!form.classList.contains('hidden')) form.querySelector('input').focus();
+                return;
+            }
 
-        container.querySelector('.category-text').classList.add('hidden');
-        form.classList.remove('hidden');
-        select.focus();
+            // --- Location Edit ---
+            const editLocationBtn = event.target.closest('.edit-location-btn');
+            if (editLocationBtn) {
+                const td = editLocationBtn.closest('td');
+                td.querySelector('.location-text').classList.add('hidden');
+                const form = td.querySelector('.location-form');
+                form.classList.remove('hidden');
+                form.querySelector('select').focus();
+                return;
+            }
 
-        select.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                otherInput.classList.remove('hidden');
-                otherInput.focus();
-            } else {
-                otherInput.classList.add('hidden');
-                // Other (not 'Other') is selected, submit the form directly.
-                form.submit();
+            // --- Category Edit ---
+            const editCategoryBtn = event.target.closest('.edit-category-btn');
+            if (editCategoryBtn) {
+                const container = editCategoryBtn.closest('td');
+                container.querySelector('.category-text').classList.add('hidden');
+                const form = container.querySelector('.category-form');
+                form.classList.remove('hidden');
+                form.querySelector('select[name="Issue_Category"]').focus();
             }
         });
-
-        otherInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                if (otherInput.value.trim() !== '') {
-                    // Do NOT change select.value. Just submit the form.
-                    form.submit();
-                } else {
-                    alert('Please specify the category.');
+        
+        // --- Category form's dynamic behavior (change/keydown) ---
+        // This part also needs delegation
+        tableBody.addEventListener('change', function(event) {
+            const select = event.target;
+            if (select.name === 'Issue_Category') {
+                const form = select.closest('.category-form');
+                const otherInput = form.querySelector('input[name="Other_Category"]');
+                if (select.value === 'Other') {
+                    otherInput.classList.remove('hidden');
                     otherInput.focus();
+                } else {
+                    otherInput.classList.add('hidden');
+                    form.submit();
                 }
             }
         });
-    });
-});
 
-document.querySelectorAll('.edit-location-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        const td = btn.closest('td');
-        const span = td.querySelector('.location-text');
-        const form = td.querySelector('.location-form');
-
-        // Toggle visibility
-        span.classList.add('hidden');
-        form.classList.remove('hidden');
-
-        // Focus on the select box
-        const select = form.querySelector('select');
-        select.focus();
-    });
-});
-
+        tableBody.addEventListener('keydown', function(event) {
+            const input = event.target;
+            if (input.name === 'Other_Category' && event.key === 'Enter') {
+                event.preventDefault();
+                const form = input.closest('.category-form');
+                if (input.value.trim() !== '') {
+                    form.submit();
+                } else {
+                    alert('Please specify the category.');
+                    input.focus();
+                }
+            }
+        });
+    }
 });
 </script>

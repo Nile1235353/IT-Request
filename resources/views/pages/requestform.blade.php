@@ -56,7 +56,7 @@
       <div class="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Issue Category -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Issue Category</label>
+          <label class="block text-sm font-medium text-gray-700">Request Category </label>
           <select id="Issue_Category" name="Issue_Category" required
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
             <option value="">Select Category</option>
@@ -91,7 +91,7 @@
               <option>New Hardware Request</option>
               <option>New Software Installation Request</option>
             </optgroup>
-            <option value="Other">Other</option>
+            <!-- <option value="Other">Other</option> -->
           </select>
 
           <input type="text" id="Other_Category" name="Other_Category" placeholder="Please specify..." 

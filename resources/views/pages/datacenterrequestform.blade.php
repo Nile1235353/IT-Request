@@ -38,41 +38,28 @@
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" readonly>
     </div>
 
-    <!-- <div>
-        <label for="Priority" class="block text-sm font-medium text-gray-700">Priority</label>
-        <select id="Priority" name="Priority" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-          <option>Urgent</option>
-        </select>
-      </div> -->
-
       <div class="lg:col-span-2">
-        <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>
-        <select id="Issue_Category" name="Issue_Category" required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-            <option value="">Select Category</option>
-            <option value="datacenterCancel">Data Center Doc Cancel Request</option>
-            <option value="operationCancel">Operation Doc Cancel Request</option>
-            <option value="customerCancel">Customer Doc Cancel Request</option>
-            <option value="printSSCC">Print SSCC</option>
-            <!-- <option value="Other">Other</option> -->
-        </select>
+        <label for="category" class="block text-sm font-medium text-gray-700">Request Category </label>
+        <div>
+          <select id="category" name="category" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+              <option value="">Select Category</option>
+              <option value="Data Center Doc Cancel Request">Data Center Doc Cancel Request</option>
+              <option value="Operation Doc Cancel Request">Operation Doc Cancel Request</option>
+              <option value="Customer Doc Cancel Request">Customer Doc Cancel Request</option>
+              <option value="Print SSCC">Print SSCC</option>
+              <!-- <option value="Other">Other</option> -->
+          </select>
 
-        <input type="text" id="Other_Category" name="Other_Category" placeholder="Please specify..." 
-                class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 hidden">
+          <input type="text" id="otherCategoryDiv" name="otherCategoryDiv" placeholder="Please specify..." 
+                  class="mt-2 block w-full rounded-md border-gray-300 shadow-sm p-2 hidden">
+        </div>
       </div>
 
       <div class="md:col-span-2 lg:col-span-3">
         <label for="Request_Description" class="block text-sm font-medium text-gray-700">Request Description</label>
         <input type="text" id="Request_Description" name="Request_Description" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="e.g., Fix login page bug">
       </div>
-      <!-- <div class="md:col-span-2 lg:col-span-3">
-        <label for="Remark" class="block text-sm font-medium text-gray-700">Comment / Remark</label>
-        <textarea id="Remark" name="Remark" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Add any additional details here..."></textarea>
-      </div> -->
     </div>
     <div class="mt-6">
       <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
@@ -83,17 +70,22 @@
 </div>
 
 <script>
-  const categorySelect = document.getElementById('Issue_Category');
-  const otherInput = document.getElementById('Other_Category');
+document.addEventListener("DOMContentLoaded", function () {
+    const category = document.getElementById("category");
+    const otherDiv = document.getElementById("otherCategoryDiv");
 
-  categorySelect.addEventListener('change', function() {
-    if (this.value === 'Other') {
-      otherInput.classList.remove('hidden');
-      otherInput.required = true;
-    } else {
-      otherInput.classList.add('hidden');
-      otherInput.required = false;
-      otherInput.value = '';
+    function toggleOtherInput() {
+        if (category.value === "Other") {
+            otherDiv.style.display = "block";
+        } else {
+            otherDiv.style.display = "none";
+        }
     }
-  });
+
+    // First load check
+    toggleOtherInput();
+
+    // When user changes
+    category.addEventListener("change", toggleOtherInput);
+});
 </script>

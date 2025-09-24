@@ -184,15 +184,15 @@
     });
 
     // Request Description Inline Edit
-    document.querySelectorAll('.edit-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const td = btn.closest('td');
-            td.querySelector('.description-text').classList.toggle('hidden');
-            const form = td.querySelector('.description-form');
-            form.classList.toggle('hidden');
-            if (!form.classList.contains('hidden')) form.querySelector('input').focus();
-        });
-    });
+    // document.querySelectorAll('.edit-btn').forEach(function(btn) {
+    //     btn.addEventListener('click', function() {
+    //         const td = btn.closest('td');
+    //         td.querySelector('.description-text').classList.toggle('hidden');
+    //         const form = td.querySelector('.description-form');
+    //         form.classList.toggle('hidden');
+    //         if (!form.classList.contains('hidden')) form.querySelector('input').focus();
+    //     });
+    // });
 
     // Remark Inline Edit
     document.querySelectorAll('.edit-remark-btn').forEach(function(btn) {

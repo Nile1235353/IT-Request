@@ -10,7 +10,7 @@
   
   <style>
     body {
-      background: url("{{ asset('storage/background-ss.png') }}") no-repeat repeat; /* center fixed */
+      background: url("{{ asset('images/background-ss.png') }}") no-repeat repeat; /* center fixed */
       background-size: cover;
     }
     .login-container {
@@ -73,21 +73,21 @@
     <div class="logo-container">
       <!-- Left Top Logo -->
       <div class="mb-2 mb-md-0">
-        <img src="{{ asset('storage/login-left.png') }}" 
+        <img src="{{ asset('images/login-left.png') }}" 
              alt="RGL Logo" 
              style="max-width: 150px;">
       </div>
 
       <!-- Right Top Logo (Logo 1 - Default/PC) -->
       <div class="logo-1">
-        <img src="{{ asset('storage/login-right.png') }}" 
+        <img src="{{ asset('images/login-right.png') }}" 
              alt="Moving Progress Logo" 
              style="max-width: 180px;">
       </div>
 
       <!-- Right Top Logo (Logo 2 - Mobile) -->
       <div class="logo-2">
-        <img src="{{ asset('storage/moving-later.png') }}" 
+        <img src="{{ asset('images/moving-later.png') }}" 
              alt="Later Logo" 
              style="max-width: 150px;">
       </div>

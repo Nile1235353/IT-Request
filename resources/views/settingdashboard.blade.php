@@ -10,52 +10,18 @@
 
   <!-- Request Type Dropdown -->
   <select id="request-type" name="request_type" class="border rounded-lg p-2 mb-6">
-  <option value="infra" {{ old('request_type', 'infra') == 'infra' ? 'selected' : '' }}>Request to Hardware Team</option>
-  <!-- <option value="software" {{ old('request_type') == 'software' ? 'selected' : '' }}>Request to Software Team</option> -->
-  <option value="datacenter" {{ old('request_type') == 'datacenter' ? 'selected' : '' }}>Request to Data Center Team</option>
+    <option value="user" {{ old('request_type', 'user') == 'user' ? 'selected' : '' }}>Request to Hardware Team</option>
+    <option value="management" {{ old('request_type') == 'management' ? 'selected' : '' }}>Request to Data Center Team</option>
 </select>
 
 
-  <!-- Infra Fields -->
-  <div id="infra-fields" class="request-section">
-    <!-- <fieldset class="mb-6 p-4 border rounded-lg bg-gray-50">
-      <legend class="text-lg font-semibold">Infrastructure Details</legend>
-      <label class="block text-gray-700 mb-2">Hardware Needed</label>
-      <input type="text" name="hardware" class="w-full border rounded-lg p-2 mb-4">
-    </fieldset> -->
-    @include('pages.dashboard')
-    @include('pages.requestform')
-    @include('pages.requestlist')
+  <!--  -->
+  <div id="user-fields" class="request-section">
+    <p>This is User Page!</p>
   </div>
 
-  <!-- Software Fields -->
-  <div id="software-fields" class="request-section hidden">
-    <!-- <fieldset class="mb-6 p-4 border rounded-lg bg-gray-50">
-      <legend class="text-lg font-semibold">Software Details</legend>
-      <label class="block text-gray-700 mb-2">Software Name</label>
-      <input type="text" name="software_name" class="w-full border rounded-lg p-2 mb-4">
-
-      <label class="block text-gray-700 mb-2">Version</label>
-      <input type="text" name="version" class="w-full border rounded-lg p-2 mb-4">
-    </fieldset> -->
-    <!-- @include('pages.softwaredashboard') -->
-    <!-- @include('pages.softwarerequestform') -->
-    <!-- @include('pages.softwarerequestlist') -->
-  </div>
-
-  <!-- Data Center Fields -->
-  <div id="datacenter-fields" class="request-section hidden">
-    <!-- <fieldset class="mb-6 p-4 border rounded-lg bg-gray-50">
-      <legend class="text-lg font-semibold">Data Center Details</legend>
-      <label class="block text-gray-700 mb-2">Server Requirement</label>
-      <input type="text" name="server" class="w-full border rounded-lg p-2 mb-4">
-
-      <label class="block text-gray-700 mb-2">Rack Number</label>
-      <input type="text" name="rack" class="w-full border rounded-lg p-2 mb-4">
-    </fieldset> -->
-    @include('pages.datacenterdashboard')
-    @include('pages.datacenterrequestform')
-    @include('pages.datacenterrequestlist')
+  <div id="management-fields" class="request-section">
+    <p>This is Management Page !</p>
   </div>
 
   <!-- Submit Button -->
@@ -111,7 +77,7 @@
           console.log('Value from Laravel old() (oldType):', oldType || 'Not set');
 
           // 2. ဘယ်တန်ဖိုးကို အသုံးပြုမလဲဆိုတာ ဆုံးဖြတ်မယ်
-          let defaultType = oldType || savedType || 'infra';
+          let defaultType = oldType || savedType || 'user';
           
           // --- DEBUGGING: ဘယ် default value ကို ရွေးလိုက်လဲ ကြည့်ရန် ---
           console.log('Final defaultType that will be used:', defaultType);

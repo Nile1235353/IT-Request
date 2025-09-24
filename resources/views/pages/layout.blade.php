@@ -16,7 +16,9 @@
     }
 
     .bg-blue {
-      background-color: #00559c;
+      /* background-color: #00559c; */
+      background-image: url("{{ asset('images/background-navbar.png') }}");
+      background-size: cover;
     }
   </style>
 </head>
@@ -29,7 +31,7 @@
       <div class="flex items-center space-x-6">
         {{-- Logo will be hidden on small screens, shown on medium screens and up --}}
         <a href="{{ url('/dashboard') }}" class="flex-shrink-0 hidden md:block">
-          <img class="w-40 h-auto"  src="{{ asset('storage/navlogo.png') }}" alt="RGL Logo">
+          <img class="w-40 h-auto"  src="{{ asset('images/navlogo.png') }}" alt="RGL Logo">
         </a>
         
         <a href="{{ url('/dashboard') }}" class="text-lg font-semibold hover:text-gray-300">
@@ -55,11 +57,14 @@
             
             <div id="user-dropdown-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5">
               <div class="px-4 py-2 text-sm text-gray-700 truncate">
-                {{ Auth::user()->email }}
+                {{ Auth::user()->name }}
               </div>
               <a href="{{ url('/register') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Register
               </a>
+              <!-- <a href="{{ url('/settingDashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Setting
+              </a> -->
               <div class="border-t border-gray-100 my-1"></div>
               <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
@@ -87,7 +92,7 @@
     <div class="flex flex-col items-center mb-6 md:flex-row-reverse md:justify-between md:items-start">
       
       <div class="mb-4 md:mb-0 md:ml-6">
-        <img src="{{ asset('storage/contentlogo.png') }}" alt="RGL Logo" class="w-80 h-auto" />
+        <img src="{{ asset('images/contentlogo.png') }}" alt="RGL Logo" class="w-80 h-auto" />
       </div>
 
       <div class="text-center md:text-left md:flex-grow">

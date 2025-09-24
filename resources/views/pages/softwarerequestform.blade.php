@@ -196,18 +196,4 @@
   </form>
 </div>
 
-<script>
-  const categorySelect = document.getElementById('Issue_Category');
-  const otherInput = document.getElementById('Other_Category');
 
-  categorySelect.addEventListener('change', function() {
-    if (this.value === 'Other') {
-      otherInput.classList.remove('hidden');
-      otherInput.required = true;
-    } else {
-      otherInput.classList.add('hidden');
-      otherInput.required = false;
-      otherInput.value = '';
-    }
-  });
-</script>

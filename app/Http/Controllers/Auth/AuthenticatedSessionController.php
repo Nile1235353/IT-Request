@@ -16,6 +16,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        // Login ဝင်ထားပြီးသားဆိုရင် အရင် session ကို ဖျက်ပြီးမှ login form ကိုပြမယ်
+        if (Auth::check()) {
+            Auth::guard('web')->logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+        }
+        
         return view('auth.login');
     }
 
@@ -24,6 +31,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();

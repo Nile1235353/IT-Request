@@ -14,6 +14,7 @@ class ItRequestController extends Controller
 {
     //
     // Index
+
     public function index() 
     {
         // for Infra
@@ -199,17 +200,17 @@ class ItRequestController extends Controller
             'Department'          => 'required|string|max:255',
             'Location'           => 'nullable|string|max:255',
             // 'Priority'            => 'required|in:Low,Medium,High,Critical',
-            'Issue_Category'      => 'required|string|max:255',
-            'Other_Category'      => 'nullable|string|max:255',
+            'category'      => 'required|string|max:255',
+            // 'Other_Category'      => 'nullable|string|max:255',
             'Request_Description' => 'required|string|max:255',
             'Remark'              => 'nullable|string',
         ]);
 
         // 2. Handle the 'Other' category logic
-        $issueCategory = $request->input('Issue_Category');
-        $finalCategory = ($issueCategory === 'Other') 
-                         ? $request->input('Other_Category') 
-                         : $issueCategory;
+        $issueCategory = $request->category;
+        if ($issueCategory === 'Other' && $request->otherCategoryDiv) {
+            $issueCategory = $request->otherCategoryDiv;
+        }
 
         // 3. Create a new service request record
         DataCenter_Request::create([
@@ -219,7 +220,7 @@ class ItRequestController extends Controller
             'Department'          => $validated['Department'],
             'Location'            => $validated['Location'],
             // 'Priority'            => $validated['Priority'],
-            'Issue_Category'      => $finalCategory,
+            'Issue_Category'      => $issueCategory,
             'Request_Description' => $validated['Request_Description'],
             // 'Remark'              => $validated['Remark'],
             'Remark'            => $validated['Remark'] ?? 'Null', // default to 'Null' if not provided
