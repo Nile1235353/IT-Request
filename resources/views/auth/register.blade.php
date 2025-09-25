@@ -55,7 +55,7 @@
 
             <div class="flex-1 mb-4">
                 <label class="block mb-2 text-gray-700">Department</label>
-                <select name="location" required class="w-full p-2 border rounded">
+                <select name="department" required class="w-full p-2 border rounded">
                     <option value="">Select Department</option>
                     <option value="AHR" {{ old('department') == 'AHR' ? 'selected' : '' }}>AHR</option>
                     <option value="Business Development" {{ old('department') == 'Business Development' ? 'selected' : '' }}>Business Development</option>
