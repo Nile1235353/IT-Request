@@ -66,6 +66,7 @@
                     <option value="CCA" {{ old('department') == 'CCA' ? 'selected' : '' }}>CCA</option>
                     <option value="IT" {{ old('department') == 'IT & Process' ? 'selected' : '' }}>IT & Process</option>
                     <option value="M&E" {{ old('department') == 'M&E' ? 'selected' : '' }}>M&E</option>
+                    <option value="M&R" {{ old('department') == 'M&R' ? 'selected' : '' }}>M&R</option>
                     <option value="QEHS" {{ old('department') == 'QEHS' ? 'selected' : '' }}>QEHS</option>
                     <option value="Operation" {{ old('department') == 'Operation' ? 'selected' : '' }}>Operation</option>
                     <option value="Truck" {{ old('department') == 'Truck' ? 'selected' : '' }}>Truck</option>
