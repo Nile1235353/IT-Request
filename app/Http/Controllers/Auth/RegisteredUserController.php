@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', 'in:admin,user'],
             'employee_id' => ['required', 'string', 'max:50'],
-            'department' => ['required', 'string', 'max:100'],
+            'department' => ['nullable', 'string', 'max:100'],
             'location' => ['nullable', 'string', 'max:100'],
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
