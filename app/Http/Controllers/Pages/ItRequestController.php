@@ -18,7 +18,7 @@ class ItRequestController extends Controller
     public function index() 
     {
         // for Infra
-        $services = It_Request::orderBy('id', 'desc')->paginate(10);
+        $services = It_Request::orderBy('id', 'desc')->paginate(5);
 
         //For Software
         $software_services = Software_Request::orderBy('id', 'desc')->paginate(10);
