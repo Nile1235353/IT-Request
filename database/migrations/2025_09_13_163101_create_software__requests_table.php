@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('department');
             $table->string('location');
             $table->dateTime('request_date');
+            $table->dateTime('in_progress_date')->nullable();
             $table->string('priority');
             $table->string('system');
             $table->string('type');
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->string('testers')->nullable();
             $table->date('launched_date')->nullable();
             $table->date('job_done_date')->nullable();
+            $table->date('job_close_date')->nullable();
             $table->text('user_feedback')->nullable();
             $table->text('remark')->nullable();
             $table->string('status')->default('Open');

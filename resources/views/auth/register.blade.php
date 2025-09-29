@@ -68,6 +68,7 @@
                     <option value="M&E" {{ old('department') == 'M&E' ? 'selected' : '' }}>M&E</option>
                     <option value="M&R" {{ old('department') == 'M&R' ? 'selected' : '' }}>M&R</option>
                     <option value="QEHS" {{ old('department') == 'QEHS' ? 'selected' : '' }}>QEHS</option>
+                    <option value="Corporate" {{ old('department') == 'Corporate' ? 'selected' : '' }}>Corporate</option>
                     <option value="Operation" {{ old('department') == 'Operation' ? 'selected' : '' }}>Operation</option>
                     <option value="Truck" {{ old('department') == 'Truck' ? 'selected' : '' }}>Truck</option>
                     <option value="Yard & Rail" {{ old('department') == 'Yard & Rail' ? 'selected' : '' }}>Yard & Rail</option>

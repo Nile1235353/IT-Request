@@ -9,6 +9,8 @@ use App\Models\It_Request;
 use App\Models\Software_Request;
 use App\Models\DataCenter_Request;
 use Illuminate\Support\Str;
+use App\Mail\SoftwareRequestNotification; // သင့် Mailable class
+use Illuminate\Support\Facades\Mail;
 
 class ItRequestController extends Controller
 {
@@ -19,6 +21,28 @@ class ItRequestController extends Controller
     {
         // for Infra
         $services = It_Request::orderBy('id', 'desc')->paginate(5);
+        // အရင်ဆုံး It_Request Model ကို သုံးတဲ့အတွက် Auth ကို စစ်ဆေးပါ
+        // if (auth()->check()) {
+            
+        //     // User ရဲ့ Role ကို စစ်ဆေးပါ
+        //     if (auth()->user()->role === 'admin') {
+        //         // 1. ADMIN ဆိုရင် - Data အားလုံးကို ဆွဲထုတ်ပါ
+        //         $services = It_Request::orderBy('id', 'desc')->paginate(5);
+                
+        //     } else {
+        //         // 2. ADMIN မဟုတ်ရင် - Location AND Department နှစ်ခုလုံးကို စစ်ဆေးပြီး ဆွဲထုတ်ပါ
+        //         $userLocation = auth()->user()->location;
+        //         $userDepartment = auth()->user()->department; // User ရဲ့ Department ကို ယူပါ
+                
+        //         $services = It_Request::where('Location', $userLocation)
+        //                             ->where('Department', $userDepartment) // Department ကို ထပ်စစ်ပါ
+        //                             ->orderBy('id', 'desc')
+        //                             ->paginate(5);
+        //     }
+        // } else {
+        //     // Login မဝင်ထားရင် - (Optional: Middleware က ကာကွယ်ပြီးသားဖြစ်သင့်သည်)
+        //     $services = It_Request::where('id', null)->paginate(5); 
+        // }
 
         //For Software
         $software_services = Software_Request::orderBy('id', 'desc')->paginate(10);
@@ -47,7 +71,7 @@ class ItRequestController extends Controller
             'completed'   => Software_Request::where('status', 'completed')->count(),
         ];
 
-        //For Software
+        //For Data Center
         $datacenter_stats = [
             'today'       => DataCenter_Request::whereDate('created_at', $today)->count(),
             'open'        => DataCenter_Request::where('status', 'open')->count(),
@@ -117,76 +141,79 @@ class ItRequestController extends Controller
     // For Softare Request Store
 
     public function softwareStore(Request $request)
-    {
-        $request->validate([
-            'Requester_Name'      => 'required|string|max:255',
-            'Employee_ID'         => 'required|string|max:50',
-            'Requester_Email'     => 'nullable|email|max:255',
-            'Requester_Phone'     => 'nullable|string|max:20',
-            'Department'          => 'required|string|max:100',
-            'Location'            => 'nullable|string|max:255',
+{
+    $request->validate([
+        'Requester_Name'      => 'required|string|max:255',
+        'Employee_ID'         => 'required|string|max:50',
+        'Requester_Email'     => 'nullable|email|max:255',
+        'Requester_Phone'     => 'nullable|string|max:20',
+        'Department'          => 'required|string|max:100',
+        'Location'            => 'nullable|string|max:255',
+        'Request_Date'        => 'nullable|date',
+        'In_Progress_Date'    => 'nullable|date',
+        'Priority'            => 'nullable|in:Low,Medium,High,Critical',
+        'System'              => 'nullable|string|max:100',
+        'Type'                => 'nullable|string|max:100',
+        'Issue_Category'      => 'nullable|string|max:100',
+        'Other_Category'      => 'nullable|string|max:255',
+        'Request_Description' => 'required|string|max:500',
+        'Assignee'            => 'nullable|string|max:100',
+        'Software_Comment'    => 'nullable|string|max:1000',
+        'Testers'             => 'nullable|string|max:255',
+        'Launched_Date'       => 'nullable|date',
+        'Job_Done_Date'       => 'nullable|date', // ❗️ တစ်ခုကို ဖယ်လိုက်ပါပြီ
+        'User_Feedback'       => 'nullable|string|max:1000',
+        'Remark'              => 'nullable|string|max:1000',
+    ]);
 
-            'Request_Date'        => 'nullable|date',
-            'Priority'            => 'required|in:Low,Medium,High,Critical',
-            'System'              => 'nullable|string|max:100',
-            'Type'                => 'nullable|string|max:100',
-
-            'Issue_Category'      => 'required|string|max:100',
-            'Other_Category'      => 'nullable|string|max:255',
-
-            'Request_Description' => 'required|string|max:500',
-
-            'Assignee'            => 'nullable|string|max:100',
-            'Software_Comment'    => 'nullable|string|max:1000',
-            'Testers'             => 'nullable|string|max:255',
-
-            'Launched_Date'       => 'nullable|date',
-            'Job_Done_Date'       => 'nullable|date',
-
-            'User_Feedback'       => 'nullable|string|max:1000',
-            'Remark'              => 'nullable|string|max:1000',
-        ]);
-
-        // If "Other" is selected, use the text input value
-        $issueCategory = $request->Issue_Category;
-        if ($issueCategory === 'Other' && $request->Other_Category) {
-            $issueCategory = $request->Other_Category;
-        }
-
-        // Auto generate Ticket ID (TCKT-20250914-xxxx)
-        $ticketId = 'TCKT-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
-
-        Software_Request::create([
-            'ticket_id'            => $ticketId,
-            'requester_name'       => $request->Requester_Name,
-            'employee_id'          => $request->Employee_ID,
-            'requester_email'      => $request->Requester_Email,
-            'requester_phone'      => $request->Requester_Phone,
-            'department'           => $request->Department,
-            'location'             => $request->Location,
-
-            'request_date'         => $request->Request_Date,
-            'priority'             => $request->Priority,
-            'system'               => $request->System,
-            'type'                 => $request->Type,
-            'issue_category'       => $issueCategory,
-            'other_category'       => $request->Other_Category,
-
-            'request_description'  => $request->Request_Description,
-            'assignee'             => $request->Assignee,
-            'software_comment'     => $request->Software_Comment,
-            'testers'              => $request->Testers,
-
-            'launched_date'        => $request->Launched_Date,
-            'job_done_date'        => $request->Job_Done_Date,
-
-            'user_feedback'        => $request->User_Feedback,
-            'remark'               => $request->Remark,
-            'status'               => 'Open', // default
-        ]);
-
-        return redirect()->back()->with('success', 'Software request added successfully.');
+    $issueCategory = $request->Issue_Category;
+    if ($issueCategory === 'Other' && $request->Other_Category) {
+        $issueCategory = $request->Other_Category;
     }
+
+    $ticketId = 'TCKT-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+
+    // ❗️ 1. Data create လုပ်ပြီး $softwareRequest variable ထဲကို သိမ်းလိုက်ပါ
+    $softwareRequest = Software_Request::create([
+        'ticket_id'           => $ticketId,
+        'requester_name'      => $request->Requester_Name,
+        'employee_id'         => $request->Employee_ID,
+        'requester_email'     => $request->Requester_Email,
+        'requester_phone'     => $request->Requester_Phone,
+        'department'          => $request->Department,
+        'location'            => $request->Location,
+        'request_date'        => now()->toDateString(),
+        'in_progress_date'    => null,
+        'priority'            => $request->Priority ?? 'Low', // ❗️ 2. '?? Null' ကို ဖယ်လိုက်ပါ
+        'system'              => $request->System,
+        'type'                => $request->Type,
+        'issue_category'      => $issueCategory ?? 'Null',
+        'other_category'      => $request->Other_Category ?? 'Null',
+        'request_description' => $request->Request_Description,
+        'assignee'            => $request->Assignee ?? 'Null',
+        'software_comment'    => $request->Software_Comment ?? 'Null',
+        'testers'             => $request->Testers ?? 'Null',
+        'launched_date'       => null,
+        'job_done_date'       => null,
+        'job_close_date'      => null,
+        'user_feedback'       => $request->User_Feedback ?? 'Null',
+        'remark'              => $request->Remark ?? 'Null',
+        'status'              => 'Open',
+    ]);
+
+    // Send Email to Request Receiver
+    try {
+        // ❗️ 3. .env file ကနေ email ကို ခေါ်သုံးတာ ပိုကောင်းပါတယ်
+        $receiverEmail = env('MAIL_RECEIVER_ADDRESS', 'rglscanner9@gmail.com');
+        Mail::to($receiverEmail)->send(new SoftwareRequestNotification($softwareRequest));
+
+    } catch (\Exception $e) {
+        // Email ပို့တာ မအောင်မြင်ရင်တောင် request ကိုတော့ သိမ်းပြီးသားဖြစ်ကြောင်း message ပြနိုင်ပါတယ်
+        return redirect()->back()->with('warning', 'Request saved successfully, but failed to send notification email. Error: ' . $e->getMessage());
+    }
+
+    return redirect()->back()->with('success', 'Software request added successfully and notification sent.');
+}
 
     // For Data Center Request Store
 
@@ -298,22 +325,51 @@ class ItRequestController extends Controller
     //For Software
 
     public function softwareUpdateStatus(Request $request, $id)
-    {
+{
+    if (!auth()->check() || auth()->user()->role !== 'admin') {
+        return redirect()->back()->with('error', '❌ Access Denied: Admin role only.');
+    }
 
-        if (!auth()->check() || auth()->user()->role !== 'admin') {
-            return redirect()->back()->with('error', '❌ Access Denied: Admin role only.');
+    $request->validate([
+        'status' => 'required|string|max:255',
+        'priority' => 'nullable|in:Low,Medium,High,Critical',
+        'software_comment' => 'nullable|string|max:1000',
+    ]);
+
+    $req = Software_Request::findOrFail($id);
+    $req->status = $request->status;
+
+    if ($request->status === 'In Progress') {
+        if (!$req->in_progress_date) {
+            $req->in_progress_date = now();
         }
 
-        $request->validate([
-            'status' => 'required|string|max:255',
-        ]);
+        // Assignee ကို Login User အလိုက် auto set
+        // if (!$req->assignee) {
+        //     $req->assignee = auth()->user()->name;
+        // }
 
-        $req =Software_Request::findOrFail($id);
-        $req->status = $request->status;
-        $req->save();
+        $req->assignee = $request->assignee ?? null;
 
-        return redirect()->back()->with('success', 'Status updated!');
+        // Priority & Comment update
+        $req->priority = $request->priority ?? $req->priority ?? 'Null';
+        $req->software_comment = $request->software_comment ?? $req->software_comment ?? 'Null';
     }
+
+    if ($request->status === 'Launched' && !$req->launched_date) {
+        $req->launched_date = now();
+    }
+
+    if ($request->status === 'Job Done' && !$req->job_done_date) {
+        $req->job_done_date = now();
+    }
+
+    $req->save();
+
+    return redirect()->back()->with('success', '✅ Status updated successfully!');
+}
+
+
 
     //For Data Center
 

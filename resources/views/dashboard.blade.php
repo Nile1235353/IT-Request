@@ -38,9 +38,9 @@
       <label class="block text-gray-700 mb-2">Version</label>
       <input type="text" name="version" class="w-full border rounded-lg p-2 mb-4">
     </fieldset> -->
-    <!-- @include('pages.softwaredashboard') -->
-    <!-- @include('pages.softwarerequestform') -->
-    <!-- @include('pages.softwarerequestlist') -->
+    @include('pages.softwaredashboard')
+    @include('pages.softwarerequestform')
+    @include('pages.softwarerequestlist')
   </div>
 
   <!-- Data Center Fields -->

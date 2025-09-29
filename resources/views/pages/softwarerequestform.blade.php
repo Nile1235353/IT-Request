@@ -8,19 +8,19 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- Row 1 -->
-      <div>
+      <!-- <div>
           <label for="Ticket_ID" class="block text-sm font-medium text-gray-700">Ticket ID</label>
           <input type="text" id="Ticket_ID" name="Ticket_ID" 
                 value="TCKT-{{ time() }}" 
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
-      </div>
+      </div> -->
 
-      <div>
+      <!-- <div>
           <label for="Request_Date" class="block text-sm font-medium text-gray-700">Request Date & Time</label>
           <input type="datetime-local" id="Request_Date" name="Request_Date" 
                 value="{{ now()->format('Y-m-d\TH:i') }}" 
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100" readonly>
-      </div>
+      </div> -->
 
       <div>
           <label for="Requester_Name" class="block text-sm font-medium text-gray-700">Requester</label>
@@ -62,10 +62,11 @@
       <div>
         <label for="Location" class="block text-sm font-medium text-gray-700">Location</label>
         <input type="text" id="Location" name="Location" required
+              value="{{ Auth::user()->location }}"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
       </div>
 
-      <div>
+      <!-- <div>
         <label for="Priority" class="block text-sm font-medium text-gray-700">Priority</label>
         <select id="Priority" name="Priority" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -75,7 +76,7 @@
           <option>High</option>
           <option>Critical</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Row 4 -->
       <div>
@@ -103,7 +104,7 @@
         </select>
       </div>
 
-      <div>
+      <!-- <div>
         <label for="Issue_Category" class="block text-sm font-medium text-gray-700">Issue Category</label>
         <select id="Issue_Category" name="Issue_Category" required 
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -117,10 +118,10 @@
         </select>
         <input type="text" id="Other_Category" name="Other_Category" placeholder="Please specify..." 
               class="mt-2 block w-full rounded-md border-gray-300 shadow-sm p-2 hidden">
-      </div>
+      </div> -->
 
       <!-- Row 5 -->
-      <div>
+      <!-- <div>
         <label for="Assignee" class="block text-sm font-medium text-gray-700">Assignee</label>
         <input type="text" id="Assignee" name="Assignee"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -130,9 +131,9 @@
         <label for="Testers" class="block text-sm font-medium text-gray-700">Testers</label>
         <input type="text" id="Testers" name="Testers"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
-      </div>
+      </div> -->
 
-      <div>
+      <!-- <div>
         <label for="Status" class="block text-sm font-medium text-gray-700">Status</label>
         <select id="Status" name="Status" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -141,10 +142,10 @@
           <option>In Progress</option>
           <option>Done</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Row 6 -->
-      <div>
+      <!-- <div>
         <label for="Launched_Date" class="block text-sm font-medium text-gray-700">Launched Date</label>
         <input type="date" id="Launched_Date" name="Launched_Date" 
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
@@ -154,7 +155,7 @@
         <label for="Job_Done_Date" class="block text-sm font-medium text-gray-700">Job Done Date</label>
         <input type="date" id="Job_Done_Date" name="Job_Done_Date" 
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
-      </div>
+      </div> -->
 
     </div>
 
@@ -167,7 +168,7 @@
               placeholder="e.g., Fix login module bug"></textarea>
       </div>
 
-      <div>
+      <!-- <div>
         <label for="Software_Comment" class="block text-sm font-medium text-gray-700">Software Team’s Comment</label>
         <textarea id="Software_Comment" name="Software_Comment" rows="2"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"></textarea>
@@ -183,7 +184,7 @@
         <label for="Remark" class="block text-sm font-medium text-gray-700">Comment / Remark</label>
         <textarea id="Remark" name="Remark" rows="3"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"></textarea>
-      </div>
+      </div> -->
     </div>
 
     <!-- Submit -->
