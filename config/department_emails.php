@@ -9,7 +9,7 @@ return [
     /* Department အလိုက် သက်ဆိုင်ရာ Receiver Email များကို သတ်မှတ်ခြင်း */
     'mapping' => [
         'Warehouse'     => 'warehouse.manager@rgldryport.com', // Warehouse ရဲ့ receiver
-        'IT & Process'  => 'rglscanner9@gmail.com',    // IT & Process ရဲ့ receiver
+        'IT & Process'  => 'ytg.datacenter1@rgldryport.com',    // IT & Process ရဲ့ receiver
         'HR'            => 'hr.manager@rgldryport.com',         // HR ရဲ့ receiver
         // သင့်မှာရှိတဲ့ Department တွေနဲ့ သက်ဆိုင်ရာ Email များကို ဒီမှာ ထပ်ထည့်နိုင်ပါသည်
     ],

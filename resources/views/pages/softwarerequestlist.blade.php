@@ -143,6 +143,7 @@
         <button type="button" onclick="closeAllModals()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
         <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded">Save</button>
       </div>
+      
     </form>
   </div>
 </div>

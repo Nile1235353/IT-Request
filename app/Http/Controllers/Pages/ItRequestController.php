@@ -221,7 +221,7 @@ class ItRequestController extends Controller
         // Mail ပို့မည့် Logic
         // $adminEmail = config('mail.admin_address'); // .env ကနေယူထားတဲ့ admin email
         
-        $adminEmail = 'rglscanner9@gmail.com'; // သင့် admin email ကို ဒီမှာ ထည့်ပါ
+        $adminEmail = 'ytg.datacenter1@rgldryport.com'; // သင့် admin email ကို ဒီမှာ ထည့်ပါ
 
         // Admin ကို Mail ပို့ပါ
         Mail::to($adminEmail)->send(new SoftwareRequestCreateMail($request));
