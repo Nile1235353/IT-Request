@@ -9,8 +9,14 @@ use App\Models\It_Request;
 use App\Models\Software_Request;
 use App\Models\DataCenter_Request;
 use Illuminate\Support\Str;
-use App\Mail\SoftwareRequestNotification; // သင့် Mailable class
+use App\Mail\SoftwareRequestCreateMail; // သင့် Mailable class
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SoftwareRequestProgressMail; 
+use Illuminate\Support\Facades\Config; 
+use Illuminate\Support\Facades\Log;
+use App\Mail\SoftwareJobDoneMail;
+use App\Mail\SoftwareLaunchedMail;
+use App\Mail\SoftwareCompletedMail;
 
 class ItRequestController extends Controller
 {
@@ -141,79 +147,87 @@ class ItRequestController extends Controller
     // For Softare Request Store
 
     public function softwareStore(Request $request)
-{
-    $request->validate([
-        'Requester_Name'      => 'required|string|max:255',
-        'Employee_ID'         => 'required|string|max:50',
-        'Requester_Email'     => 'nullable|email|max:255',
-        'Requester_Phone'     => 'nullable|string|max:20',
-        'Department'          => 'required|string|max:100',
-        'Location'            => 'nullable|string|max:255',
-        'Request_Date'        => 'nullable|date',
-        'In_Progress_Date'    => 'nullable|date',
-        'Priority'            => 'nullable|in:Low,Medium,High,Critical',
-        'System'              => 'nullable|string|max:100',
-        'Type'                => 'nullable|string|max:100',
-        'Issue_Category'      => 'nullable|string|max:100',
-        'Other_Category'      => 'nullable|string|max:255',
-        'Request_Description' => 'required|string|max:500',
-        'Assignee'            => 'nullable|string|max:100',
-        'Software_Comment'    => 'nullable|string|max:1000',
-        'Testers'             => 'nullable|string|max:255',
-        'Launched_Date'       => 'nullable|date',
-        'Job_Done_Date'       => 'nullable|date', // ❗️ တစ်ခုကို ဖယ်လိုက်ပါပြီ
-        'User_Feedback'       => 'nullable|string|max:1000',
-        'Remark'              => 'nullable|string|max:1000',
-    ]);
+    {
+        $request->validate([
+            'Requester_Name'      => 'required|string|max:255',
+            'Employee_ID'         => 'required|string|max:50',
+            'Requester_Email'     => 'nullable|email|max:255',
+            'Requester_Phone'     => 'nullable|string|max:20',
+            'Department'          => 'required|string|max:100',
+            'Location'            => 'nullable|string|max:255',
+            'Request_Date'        => 'nullable|date',
+            'In_Progress_Date'    => 'nullable|date',
+            'Priority'            => 'nullable|in:Low,Medium,High,Critical',
+            'System'              => 'nullable|string|max:100',
+            'Type'                => 'nullable|string|max:100',
+            'Issue_Category'      => 'nullable|string|max:100',
+            'Other_Category'      => 'nullable|string|max:255',
+            'Request_Description' => 'required|string|max:500',
+            'Assignee'            => 'nullable|string|max:100',
+            'Software_Comment'    => 'nullable|string|max:1000',
+            'Testers'             => 'nullable|string|max:255',
+            'Launched_Date'       => 'nullable|date',
+            'Job_Done_Date'       => 'nullable|date', // ❗️ တစ်ခုကို ဖယ်လိုက်ပါပြီ
+            'User_Feedback'       => 'nullable|string|max:1000',
+            'Remark'              => 'nullable|string|max:1000',
+        ]);
 
-    $issueCategory = $request->Issue_Category;
-    if ($issueCategory === 'Other' && $request->Other_Category) {
-        $issueCategory = $request->Other_Category;
+        $issueCategory = $request->Issue_Category;
+        if ($issueCategory === 'Other' && $request->Other_Category) {
+            $issueCategory = $request->Other_Category;
+        }
+
+        $ticketId = 'TCKT-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+
+        // ❗️ 1. Data create လုပ်ပြီး $softwareRequest variable ထဲကို သိမ်းလိုက်ပါ
+        $softwareRequest = Software_Request::create([
+            'ticket_id'           => $ticketId,
+            'requester_name'      => $request->Requester_Name,
+            'employee_id'         => $request->Employee_ID,
+            'requester_email'     => $request->Requester_Email,
+            'requester_phone'     => $request->Requester_Phone,
+            'department'          => $request->Department,
+            'location'            => $request->Location,
+            'request_date'        => now()->toDateString(),
+            'in_progress_date'    => null,
+            'priority'            => $request->Priority ?? 'Low', // ❗️ 2. '?? Null' ကို ဖယ်လိုက်ပါ
+            'system'              => $request->System,
+            'type'                => $request->Type,
+            'issue_category'      => $issueCategory ?? 'Null',
+            'other_category'      => $request->Other_Category ?? 'Null',
+            'request_description' => $request->Request_Description,
+            'assignee'            => $request->Assignee ?? 'Null',
+            'software_comment'    => $request->Software_Comment ?? 'Null',
+            'testers'             => $request->Testers ?? 'Null',
+            'launched_date'       => null,
+            'job_done_date'       => null,
+            'job_close_date'      => null,
+            'user_feedback'       => $request->User_Feedback ?? 'Null',
+            'remark'              => $request->Remark ?? 'Null',
+            'status'              => 'Open',
+        ]);
+
+        // Send Email to Request Receiver
+        // try {
+        //     // ❗️ 3. .env file ကနေ email ကို ခေါ်သုံးတာ ပိုကောင်းပါတယ်
+        //     $receiverEmail = env('MAIL_RECEIVER_ADDRESS', 'rglscanner9@gmail.com');
+        //     Mail::to($receiverEmail)->send(new SoftwareRequestNotification($softwareRequest));
+
+        // } catch (\Exception $e) {
+        //     // Email ပို့တာ မအောင်မြင်ရင်တောင် request ကိုတော့ သိမ်းပြီးသားဖြစ်ကြောင်း message ပြနိုင်ပါတယ်
+        //     return redirect()->back()->with('warning', 'Request saved successfully, but failed to send notification email. Error: ' . $e->getMessage());
+        // }
+
+        // Mail ပို့မည့် Logic
+        // $adminEmail = config('mail.admin_address'); // .env ကနေယူထားတဲ့ admin email
+        
+        $adminEmail = 'rglscanner9@gmail.com'; // သင့် admin email ကို ဒီမှာ ထည့်ပါ
+
+        // Admin ကို Mail ပို့ပါ
+        Mail::to($adminEmail)->send(new SoftwareRequestCreateMail($request));
+
+        return redirect()->back()->with('success', 'Software request added successfully and notification sent.');
     }
-
-    $ticketId = 'TCKT-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
-
-    // ❗️ 1. Data create လုပ်ပြီး $softwareRequest variable ထဲကို သိမ်းလိုက်ပါ
-    $softwareRequest = Software_Request::create([
-        'ticket_id'           => $ticketId,
-        'requester_name'      => $request->Requester_Name,
-        'employee_id'         => $request->Employee_ID,
-        'requester_email'     => $request->Requester_Email,
-        'requester_phone'     => $request->Requester_Phone,
-        'department'          => $request->Department,
-        'location'            => $request->Location,
-        'request_date'        => now()->toDateString(),
-        'in_progress_date'    => null,
-        'priority'            => $request->Priority ?? 'Low', // ❗️ 2. '?? Null' ကို ဖယ်လိုက်ပါ
-        'system'              => $request->System,
-        'type'                => $request->Type,
-        'issue_category'      => $issueCategory ?? 'Null',
-        'other_category'      => $request->Other_Category ?? 'Null',
-        'request_description' => $request->Request_Description,
-        'assignee'            => $request->Assignee ?? 'Null',
-        'software_comment'    => $request->Software_Comment ?? 'Null',
-        'testers'             => $request->Testers ?? 'Null',
-        'launched_date'       => null,
-        'job_done_date'       => null,
-        'job_close_date'      => null,
-        'user_feedback'       => $request->User_Feedback ?? 'Null',
-        'remark'              => $request->Remark ?? 'Null',
-        'status'              => 'Open',
-    ]);
-
-    // Send Email to Request Receiver
-    try {
-        // ❗️ 3. .env file ကနေ email ကို ခေါ်သုံးတာ ပိုကောင်းပါတယ်
-        $receiverEmail = env('MAIL_RECEIVER_ADDRESS', 'rglscanner9@gmail.com');
-        Mail::to($receiverEmail)->send(new SoftwareRequestNotification($softwareRequest));
-
-    } catch (\Exception $e) {
-        // Email ပို့တာ မအောင်မြင်ရင်တောင် request ကိုတော့ သိမ်းပြီးသားဖြစ်ကြောင်း message ပြနိုင်ပါတယ်
-        return redirect()->back()->with('warning', 'Request saved successfully, but failed to send notification email. Error: ' . $e->getMessage());
-    }
-
-    return redirect()->back()->with('success', 'Software request added successfully and notification sent.');
-}
 
     // For Data Center Request Store
 
@@ -326,6 +340,7 @@ class ItRequestController extends Controller
 
     public function softwareUpdateStatus(Request $request, $id)
 {
+    // Authorization Check (Admin Role)
     if (!auth()->check() || auth()->user()->role !== 'admin') {
         return redirect()->back()->with('error', '❌ Access Denied: Admin role only.');
     }
@@ -334,37 +349,184 @@ class ItRequestController extends Controller
         'status' => 'required|string|max:255',
         'priority' => 'nullable|in:Low,Medium,High,Critical',
         'software_comment' => 'nullable|string|max:1000',
+        'assignee' => 'nullable|string|max:100',
+        'testers' => 'nullable|string|max:100',
     ]);
 
     $req = Software_Request::findOrFail($id);
     $req->status = $request->status;
+    
+    $shouldSendDeptMail = false; // Mail ပို့ဖို့အတွက် flag
+    $shouldSendJobDoneMail = false; // Job Done Mail ပို့ဖို့ အတွက်ပါ။
+    $shouldSendLaunchedMail = false; // Job Launched Mail ပို့ဖို့ အတွက် ပါ။
+    $shouldSendCompleteMail = false;
 
+
+    // Status is being set to 'In Progress'
     if ($request->status === 'In Progress') {
-        if (!$req->in_progress_date) {
+        // ... [Data and Assignee update logic] ...
+        
+        if (is_null($req->in_progress_date)) {
             $req->in_progress_date = now();
         }
+        if (is_null($req->assignee)) {
+            $req->assignee = auth()->user()->name;
+        } 
+        
+        $req->assignee = $request->assignee ?? $req->assignee;
+        $req->priority = $request->priority ?? $req->priority ?? 'Low';
+        $req->software_comment = $request->software_comment ?? $req->software_comment ?? null;
+        
+        $shouldSendDeptMail = true; // Mail ပို့ရန် Flag
+    }
+    
+    // ... [Date Updates for Launched / Job Done] ...
 
-        // Assignee ကို Login User အလိုက် auto set
-        // if (!$req->assignee) {
+    // if ($request->status === 'Launched' && is_null($req->launched_date)) {
+    //     $req->launched_date = now();
+    // }
+
+    if ($request->status === 'Launched') {
+        // ... [Data and Assignee update logic] ...
+        
+        if (is_null($req->launched_date)) {
+            $req->launched_date = now();
+        }
+
+        $req->testers = $request->testers ?? $req->testers;
+
+        // if (is_null($req->assignee)) {
         //     $req->assignee = auth()->user()->name;
-        // }
-
-        $req->assignee = $request->assignee ?? null;
-
-        // Priority & Comment update
-        $req->priority = $request->priority ?? $req->priority ?? 'Null';
-        $req->software_comment = $request->software_comment ?? $req->software_comment ?? 'Null';
+        // } 
+        
+        // $req->assignee = $request->assignee ?? $req->assignee;
+        // $req->priority = $request->priority ?? $req->priority ?? 'Low';
+        // $req->software_comment = $request->software_comment ?? $req->software_comment ?? null;
+        
+        $shouldSendLaunchedMail = true; // Mail ပို့ရန် Flag
     }
 
-    if ($request->status === 'Launched' && !$req->launched_date) {
-        $req->launched_date = now();
+    // if ($request->status === 'Job Done' && is_null($req->job_done_date)) {
+    //     $req->job_done_date = now();
+    // }
+
+    if ($request->status === 'Job Done') {
+        // ... [Data and Assignee update logic] ...
+        
+        if (is_null($req->job_done_date)) {
+            $req->job_done_date = now();
+        }
+        // if (is_null($req->assignee)) {
+        //     $req->assignee = auth()->user()->name;
+        // } 
+        
+        // $req->assignee = $request->assignee ?? $req->assignee;
+        // $req->priority = $request->priority ?? $req->priority ?? 'Low';
+        // $req->software_comment = $request->software_comment ?? $req->software_comment ?? null;
+        
+        $shouldSendJobDoneMail = true; // Mail ပို့ရန် Flag
     }
 
-    if ($request->status === 'Job Done' && !$req->job_done_date) {
-        $req->job_done_date = now();
+    if ($request->status === 'Completed') {
+        // ... [Data and Assignee update logic] ...
+        
+        if (is_null($req->job_close_date)) {
+            $req->job_close_date = now();
+        }
+        // if (is_null($req->assignee)) {
+        //     $req->assignee = auth()->user()->name;
+        // } 
+        
+        // $req->assignee = $request->assignee ?? $req->assignee;
+        // $req->priority = $request->priority ?? $req->priority ?? 'Low';
+        // $req->software_comment = $request->software_comment ?? $req->software_comment ?? null;
+        
+        $shouldSendCompleteMail = true; // Mail ပို့ရန် Flag
     }
 
-    $req->save();
+    $req->save(); // Database ကို Save လုပ်သည်
+    
+    
+    // 🔔 Department Mail Routing Logic
+    if ($shouldSendDeptMail) {
+        $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        
+        // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
+        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        
+        // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
+        if (empty($receiverEmail)) {
+            $receiverEmail = Config::get('department_emails.default_receiver');
+        }
+        
+        try {
+            // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
+            Mail::to($receiverEmail)->send(new SoftwareRequestProgressMail($req));
+        } catch (\Exception $e) {
+            Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
+            return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
+        }
+    }
+
+    if ($shouldSendLaunchedMail) {
+        $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        
+        // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
+        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        
+        // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
+        if (empty($receiverEmail)) {
+            $receiverEmail = Config::get('department_emails.default_receiver');
+        }
+        
+        try {
+            // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
+            Mail::to($receiverEmail)->send(new SoftwareLaunchedMail($req));
+        } catch (\Exception $e) {
+            Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
+            return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
+        }
+    }
+
+    if ($shouldSendJobDoneMail) {
+        $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        
+        // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
+        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        
+        // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
+        if (empty($receiverEmail)) {
+            $receiverEmail = Config::get('department_emails.default_receiver');
+        }
+        
+        try {
+            // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
+            Mail::to($receiverEmail)->send(new SoftwareJobDoneMail($req));
+        } catch (\Exception $e) {
+            Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
+            return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
+        }
+    }
+
+    if ($shouldSendCompleteMail) {
+        $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        
+        // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
+        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        
+        // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
+        if (empty($receiverEmail)) {
+            $receiverEmail = Config::get('department_emails.default_receiver');
+        }
+        
+        try {
+            // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
+            Mail::to($receiverEmail)->send(new SoftwareCompletedMail($req));
+        } catch (\Exception $e) {
+            Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
+            return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
+        }
+    }
 
     return redirect()->back()->with('success', '✅ Status updated successfully!');
 }
@@ -552,6 +714,64 @@ class ItRequestController extends Controller
 
         return redirect()->back()->with('success', 'Comment updated successfully!');
     }
+
+
+
+    public function showForm($id) {
+        return view('feedback.form', ['job_id' => $id]);
+    }
+
+    // public function submit(Request $request, $id) {
+    //     // Validate & Save feedback
+    //     // Software_Request::create([
+    //     //     'job_id' => $id,
+    //     //     'user_id' => auth()->id(),
+    //     //     'feedback' => $request->feedback,
+    //     // ]);
+
+    //     // return redirect()->route('feedback.form', $id)->with('success', 'Thanks for your feedback!');
+    //     $request->validate([
+    //         'user_feedback' => 'nullable|string', // Remark is nullable, so no 'required'
+    //     ]);
+
+    //     $service = Software_Request::findOrFail($id);
+    //     $service->user_feedback = $request->user_feedback;
+    //     $service->save();
+
+    //     return redirect()->back()->with('success', 'Comment updated successfully!');
+    // }
+
+    // App\Http\Controllers\Pages\ItRequestController.php ထဲက submit function
+
+    // App\Http\Controllers\Pages\ItRequestController.php ထဲက submit function
+
+public function submit(Request $request, $id)
+{
+    // 1. Validation
+    $request->validate([
+        // user_feedback ကို မဖြစ်မနေ ဖြည့်ခိုင်းရန်
+        'user_feedback' => 'required|string|max:1000', 
+    ]);
+
+    $service = Software_Request::findOrFail($id);
+
+    // 2. CRITICAL CHECK: Job ပြီးဆုံးပြီးသားဆိုရင် ထပ်မံလုပ်ဆောင်ခြင်းကို ပိတ်ပင်ပါ
+    if ($service->status === 'Completed') {
+        // Completed ဖြစ်ပြီးသားဖြစ်ကြောင်း Dashboard မှာ ပြသမည်
+        return redirect()->route('dashboard')->with('info', '✅ This request is already completed. Thank you for your feedback.');
+    }
+
+    // 3. Data Update
+    $service->user_feedback = $request->input('user_feedback');
+    
+    // 4. Status ကို 'Completed' သို့ မပြောင်းဘဲ၊ Job Close Date ကိုလည်း မသတ်မှတ်တော့ပါ။
+    // Status သည် 'Launched' သို့မဟုတ် 'Job Done' အတိုင်း ဆက်ရှိနေမည်။
+    
+    $service->save();
+
+    // 5. Redirect: Feedback ရရှိပြီးကြောင်း ပြသပြီး Dashboard ကို ပြန်ပို့ပါ
+    return redirect()->route('dashboard')->with('success', '✅ Feedback recorded successfully! An Admin will finalize the request soon.');
+}
 
 
 

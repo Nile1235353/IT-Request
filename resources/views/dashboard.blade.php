@@ -11,7 +11,7 @@
   <!-- Request Type Dropdown -->
   <select id="request-type" name="request_type" class="border rounded-lg p-2 mb-6">
   <option value="infra" {{ old('request_type', 'infra') == 'infra' ? 'selected' : '' }}>Request to Hardware Team</option>
-  <!-- <option value="software" {{ old('request_type') == 'software' ? 'selected' : '' }}>Request to Software Team</option> -->
+  <option value="software" {{ old('request_type') == 'software' ? 'selected' : '' }}>Request to Software Team</option>
   <option value="datacenter" {{ old('request_type') == 'datacenter' ? 'selected' : '' }}>Request to Data Center Team</option>
 </select>
 

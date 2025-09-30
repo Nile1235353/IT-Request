@@ -104,4 +104,10 @@ Route::put('/requests/{id}/datacenterUpdate-description', [ItRequestController::
 //     Route::post('/register', [RegisterController::class, 'store']);
 // });
 
+
+// routes/web.php
+Route::get('/feedback/{id}', [ItRequestController::class, 'showForm'])->name('feedback.form');
+Route::post('/feedback/{id}', [ItRequestController::class, 'submit'])->name('feedback.submit');
+
+
 require __DIR__.'/auth.php';

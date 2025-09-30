@@ -17,8 +17,8 @@
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Priority</th>
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">System</th>
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Type</th>
-          <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Issue Category</th>
-          <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Other Category</th>
+          <!-- <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Issue Category</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Other Category</th> -->
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Description</th>
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Assignee</th>
           <th class="px-4 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Software Comment</th>
@@ -48,8 +48,8 @@
           <td class="px-4 py-2">{{ $service->priority }}</td>
           <td class="px-4 py-2">{{ $service->system }}</td>
           <td class="px-4 py-2">{{ $service->type }}</td>
-          <td class="px-4 py-2">{{ $service->issue_category }}</td>
-          <td class="px-4 py-2">{{ $service->other_category }}</td>
+          <!-- <td class="px-4 py-2">{{ $service->issue_category }}</td>
+          <td class="px-4 py-2">{{ $service->other_category }}</td> -->
           <td class="px-4 py-2">{{ $service->request_description }}</td>
           <td class="px-4 py-2">{{ $service->assignee }}</td>
           <td class="px-4 py-2">{{ $service->software_comment }}</td>
@@ -140,34 +140,139 @@
       <input type="hidden" name="status" value="In Progress">
 
       <div class="flex justify-end space-x-2">
-        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+        <button type="button" onclick="closeAllModals()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
         <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded">Save</button>
       </div>
     </form>
   </div>
 </div>
 
+<!--Launched Modal -->
+<div id="launchedModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h3 class="text-lg font-semibold mb-4 text-indigo-700">Set Launched Details</h3>
+        <form id="launchedForm" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="status" value="Launched">
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Launched Date</label>
+                <input type="datetime-local" name="launched_date" 
+                       value="{{ now()->format('Y-m-d\TH:i') }}" 
+                       class="w-full border rounded p-2 bg-gray-100" readonly>
+            </div>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Testers (e.g., U Aye, Daw Mya)</label>
+                <input type="text" name="testers" class="w-full border rounded p-2" required>
+            </div>
 
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeAllModals()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Save & Launch</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Job Done Modal -->
+<div id="jobDoneModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h3 class="text-lg font-semibold mb-4 text-green-600">Set Job Done Details</h3>
+        <form id="jobDoneForm" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="status" value="Job Done">
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Job Done Date</label>
+                <input type="datetime-local" name="job_done_date" 
+                       value="{{ now()->format('Y-m-d\TH:i') }}" 
+                       class="w-full border rounded p-2 bg-gray-100" readonly>
+            </div>
+            
+            <!-- <div class="mb-3">
+                <label class="block text-sm font-medium">Testers (e.g., U Aye, Daw Mya)</label>
+                <input type="text" name="testers" class="w-full border rounded p-2" required>
+            </div> -->
+
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeAllModals()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Save & Done</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Complete Modal -->
+<div id="completedModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h3 class="text-lg font-semibold mb-4 text-amber-600">Complete Request Details</h3>
+        <form id="completedForm" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="status" value="Completed">
+
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Job Close Date</label>
+                <input type="datetime-local" name="job_close_date" 
+                       value="{{ now()->format('Y-m-d\TH:i') }}" 
+                       class="w-full border rounded p-2 bg-gray-100" readonly>
+            </div>
+            
+            <!-- <div class="mb-3">
+                <label class="block text-sm font-medium">User Feedback</label>
+                <textarea name="user_feedback" class="w-full border rounded p-2" rows="3" required></textarea>
+            </div> -->
+
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeAllModals()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded">Finalize & Complete</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 <script>
-function handleStatusChange(select, id) {
-  if (select.value === 'In Progress') {
-    // open modal
-    document.getElementById('inProgressModal').classList.remove('hidden');
-    // set form action dynamically
-    document.getElementById('inProgressForm').action = '/requests/' + id + '/softwareStatus';
-  } else {
-    // normal submit for other statuses
-    select.form.submit();
-  }
+// New general close function
+function closeAllModals() {
+    document.getElementById('inProgressModal').classList.add('hidden');
+    document.getElementById('jobDoneModal').classList.add('hidden');
+    document.getElementById('launchedModal').classList.add('hidden');
+    document.getElementById('completedModal').classList.add('hidden');
+    location.reload(); // Refresh after cancel, or remove if you handle state without refresh
 }
 
-function closeModal() {
-    // modal ကို hide
-    document.getElementById('inProgressModal').classList.add('hidden');
-    // page refresh
-    location.reload();
+function handleStatusChange(select, id) {
+    const formAction = '/requests/' + id + '/softwareStatus';
+
+    switch (select.value) {
+        case 'In Progress':
+            document.getElementById('inProgressModal').classList.remove('hidden');
+            document.getElementById('inProgressForm').action = formAction;
+            break;
+        case 'Job Done':
+            document.getElementById('jobDoneModal').classList.remove('hidden');
+            document.getElementById('jobDoneForm').action = formAction;
+            break;
+        case 'Launched':
+            document.getElementById('launchedModal').classList.remove('hidden');
+            document.getElementById('launchedForm').action = formAction;
+            break;
+        case 'Completed':
+            document.getElementById('completedModal').classList.remove('hidden');
+            document.getElementById('completedForm').action = formAction;
+            break;
+        default:
+            // For 'Open' or any other status without extra fields, submit directly
+            select.form.submit();
+            break;
+    }
 }
+// Note: You must ensure the original select dropdown resets to its old value 
+// if the user clicks 'Cancel' in the modal. This is done by 'location.reload()' 
+// in the closeAllModals function.
 </script>
 
