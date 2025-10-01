@@ -221,10 +221,18 @@ class ItRequestController extends Controller
         // Mail ပို့မည့် Logic
         // $adminEmail = config('mail.admin_address'); // .env ကနေယူထားတဲ့ admin email
         
-        $adminEmail = 'ytg.datacenter1@rgldryport.com'; // သင့် admin email ကို ဒီမှာ ထည့်ပါ
+        $adminEmail = 'ppnyein@rgldryport.com'; // သင့် admin email ကို ဒီမှာ ထည့်ပါ
+        $gmEmail = 'ktmoe@rgldryport.com'; // သင့် GM email ကို ဒီမှာ ထည့်ပါ
+        $ttEmail = 'tttin@rgldryport.com'; // သင့် TT email ကို ဒီမှာ ထည့်ပါ
 
         // Admin ကို Mail ပို့ပါ
         Mail::to($adminEmail)->send(new SoftwareRequestCreateMail($request));
+        if($request->Location === 'Mandalay') {
+            Mail::to($ttEmail)->send(new SoftwareRequestCreateMail($request));
+        }
+        elseif($request->Location === 'Yangon'){
+            Mail::to($gmEmail)->send(new SoftwareRequestCreateMail($request));
+        }
 
         return redirect()->back()->with('success', 'Software request added successfully and notification sent.');
     }
@@ -450,9 +458,16 @@ class ItRequestController extends Controller
     // 🔔 Department Mail Routing Logic
     if ($shouldSendDeptMail) {
         $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        $location = $req->location;
         
         // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
-        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        // $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        if($location === 'Mandalay'){
+            $receiverEmail = Config::get('department_emails.mandalay_mapping.' . $departmentName);
+        }
+        elseif($location === 'Yangon'){
+            $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        }
         
         // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
         if (empty($receiverEmail)) {
@@ -462,6 +477,12 @@ class ItRequestController extends Controller
         try {
             // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
             Mail::to($receiverEmail)->send(new SoftwareRequestProgressMail($req));
+            if($location === 'Mandalay'){
+                Mail::to('tttin@rgldryport.com')->send(new SoftwareRequestProgressMail($req));
+            }
+            elseif($location === 'Yangon'){
+                Mail::to('ktmoe@rgldryport.com')->send(new SoftwareRequestProgressMail($req));
+            }
         } catch (\Exception $e) {
             Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
             return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
@@ -470,9 +491,16 @@ class ItRequestController extends Controller
 
     if ($shouldSendLaunchedMail) {
         $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        $location = $req->location; // Request ရဲ့ Location ကို ယူပါ
         
         // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
-        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        // $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        if($location === 'Mandalay'){
+            $receiverEmail = Config::get('department_emails.mandalay_mapping.' . $departmentName);
+        }
+        elseif($location === 'Yangon'){
+            $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        }
         
         // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
         if (empty($receiverEmail)) {
@@ -482,6 +510,12 @@ class ItRequestController extends Controller
         try {
             // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
             Mail::to($receiverEmail)->send(new SoftwareLaunchedMail($req));
+            if($location === 'Mandalay'){
+                Mail::to('tttin@rgldryport.com')->send(new SoftwareLaunchedMail($req));
+            }
+            elseif($location === 'Yangon'){
+                Mail::to('ktmoe@rgldryport.com')->send(new SoftwareLaunchedMail($req));
+            }
         } catch (\Exception $e) {
             Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
             return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
@@ -490,9 +524,16 @@ class ItRequestController extends Controller
 
     if ($shouldSendJobDoneMail) {
         $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
-        
+        $location = $req->location; // Request ရဲ့ Location ကို ယူပါ
+
         // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
-        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        // $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        if($location === 'Mandalay'){
+            $receiverEmail = Config::get('department_emails.mandalay_mapping.' . $departmentName);
+        }
+        elseif($location === 'Yangon'){
+            $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        }
         
         // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
         if (empty($receiverEmail)) {
@@ -502,6 +543,12 @@ class ItRequestController extends Controller
         try {
             // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
             Mail::to($receiverEmail)->send(new SoftwareJobDoneMail($req));
+            if($location === 'Mandalay'){
+                Mail::to('tttin@rgldryport.com')->send(new SoftwareJobDoneMail($req));
+            }
+            elseif($location === 'Yangon'){
+                Mail::to('ktmoe@rgldryport.com')->send(new SoftwareJobDoneMail($req));
+            }
         } catch (\Exception $e) {
             Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
             return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');
@@ -510,9 +557,16 @@ class ItRequestController extends Controller
 
     if ($shouldSendCompleteMail) {
         $departmentName = $req->department; // Request ရဲ့ Department ကို ယူပါ
+        $location = $req->location; // Request ရဲ့ Location ကို ယူပါ
         
         // 1. Config file ကနေ Receiver Email ကို ရှာဖွေပါ
-        $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        // $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        if($location === 'Mandalay'){
+            $receiverEmail = Config::get('department_emails.mandalay_mapping.' . $departmentName);
+        }
+        elseif($location === 'Yangon'){
+            $receiverEmail = Config::get('department_emails.mapping.' . $departmentName);
+        }
         
         // 2. Email ကို Config မှာ ရှာမတွေ့ခဲ့ရင် default admin ကို သုံးပါ
         if (empty($receiverEmail)) {
@@ -522,6 +576,12 @@ class ItRequestController extends Controller
         try {
             // Mail ကို သက်ဆိုင်ရာ Receiver Email ဆီသို့ ပို့သည်
             Mail::to($receiverEmail)->send(new SoftwareCompletedMail($req));
+            if($location === 'Mandalay'){
+                Mail::to('tttin@rgldryport.com')->send(new SoftwareCompletedMail($req));
+            }
+            elseif($location === 'Yangon'){
+                Mail::to('ktmoe@rgldryport.com')->send(new SoftwareCompletedMail($req));
+            }
         } catch (\Exception $e) {
             Log::error('Failed to send In Progress notification to Dept Admin: ' . $departmentName . ' Error: ' . $e->getMessage());
             return redirect()->back()->with('warning', 'Status updated successfully, but departmental notification email failed to send.');

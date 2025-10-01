@@ -126,7 +126,7 @@
         </table>
       </div>
         <div>
-            {{ $services->links() }}
+            {{ $datacenter_services->links() }}
         </div>
     </div>
 
